@@ -1,0 +1,324 @@
+import React, { useContext, useState } from 'react'
+import { View, ScrollView, Text } from 'react-native'
+
+import { useRouter } from 'expo-router';
+import CustomHeader from '@/components/custom/customheader';
+import { useTranslation } from 'react-i18next';
+import CustomImagePicker from '@/components/custom/customimagepicker';
+import { Toast } from 'toastify-react-native'
+import axios from 'axios'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import CustomInput from '@/components/custom/custominput';
+import CustomTextArea from '@/components/custom/customtextarea';
+import CustomButton from '@/components/custom/custombutton';
+import useFetch from '@/hooks/useFetch';
+import CustomDropdown from '@/components/custom/customdropdown';
+import { config } from '@/constants/config';
+import { AuthContext } from '@/context/auth_context';
+import { useDeviceId } from '@/hooks/useDeviceId';
+import { useNetwork } from '@/context/NetworkProvider';
+import OfflineBanner from '@/components/OfflineBanner';
+
+
+export default function PostAd() {
+    const router = useRouter();
+    const { t, i18n } = useTranslation();
+    const [selectedImages, setSelectedImages] = useState<string[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const { data, loading, error } = useFetch('/categories')
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+    const { auth } = useContext(AuthContext)
+    const { deviceId, shortDeviceId, isLoading } = useDeviceId();
+    const { isConnected } = useNetwork();
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const validationSchema = Yup.object().shape({
+        title: Yup.string()
+            .required(t('ad.titleRequired'))
+            .min(2, t('ad.titleMin', { count: 2 })),
+        description: Yup.string()
+            .required(t('ad.descriptionRequired'))
+            .min(10, t('ad.descriptionMin', { count: 10 })),
+        phone: Yup.string()
+            .required(t('ad.phoneRequired'))
+            .matches(/^[0-9]+$/, t('ad.phoneInvalid'))
+            .min(8, t('ad.phoneTooShort'))
+            .max(15, t('ad.phoneTooLong')),
+
+        name: Yup.string()
+            .required(t('ad.nameRequired'))
+            .min(2, t('ad.nameMin', { count: 2 })),
+        email: Yup.string()
+            .email(t('ad.emailInvalid')),
+        // .required(t('ad.emailRequired')),
+        category: Yup.string()
+            .required(t('ad.categoryRequired')),
+        subcategory: Yup.string()
+            .when('category', ([category], schema) => {
+                return category
+                    ? schema.required(t('ad.subcategoryRequired'))
+                    : schema.notRequired();
+            }),
+    })
+
+
+
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            description: '',
+            price: '',
+            image: '',
+            phone: '',
+            name: '',
+            email: '',
+            category: '',
+            subcategory: '',
+        },
+        validationSchema,
+        onSubmit: async (values) => {
+            setIsSubmitting(true)
+
+            try {
+                const formData = new FormData()
+                formData.append('user_id', auth?.user.id || shortDeviceId || ''); // Use deviceId as fallback
+                formData.append('category_id', selectedCategory || '');
+                formData.append('subcategory_id', selectedSubcategory || '');
+                formData.append('name', values.name || '');
+                formData.append('email', values.email || '');
+                formData.append('phone', values.phone || '');
+                formData.append('price', values.price || '');
+                formData.append('title', values.title || '');
+                formData.append('description', values.description || '');
+
+                selectedImages.forEach((imgUri) => {
+                    const filename = imgUri.split('/').pop() || 'image.jpg';
+                    const match = /\.(\w+)$/.exec(filename);
+                    const type = match ? `image/${match[1]}` : 'image/jpeg';
+                    const imageFile = {
+                        uri: imgUri,
+                        name: filename,
+                        type: type,
+                    } as any;
+                    formData.append('images[]', imageFile);
+                });
+
+
+
+                const response = await axios.post(
+                    `${config.URL}/post/ad`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                )
+                console.log("Ad post response: ", response.status)
+                if (response.status == 201) {
+                    Toast.show({
+                        type: 'success',
+                        text1: t('ad.success')
+                    })
+
+
+                    formik.resetForm();
+                    setSelectedImages([]);
+                    setSelectedCategory(null);
+                    setSelectedSubcategory(null);
+
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ad.failed')
+                    })
+                }
+
+
+                // router.back()
+            } catch (error: any) {
+                Toast.show({
+                    type: 'error',
+                    text1: t('ad.failed')
+                })
+            } finally {
+                setIsSubmitting(false)
+            }
+        },
+    })
+
+
+    // Prepare category options with image
+    const categoryOptions = Array.isArray(data)
+        ? data.map((cat: any) => ({
+            label: i18n.language === 'ar' ? cat.title_ar : cat.title_en,
+            value: String(cat.id),
+            image: cat.image,
+        }))
+        : []
+
+    // Prepare subcategory options with image (if available)
+    const categoryObj = data?.find((cat: any) => String(cat.id) === selectedCategory)
+    const subcategoryOptions = categoryObj?.subcategories
+        ? categoryObj.subcategories
+            .filter((sub: any) => sub && sub.id)
+            .map((sub: any) => ({
+                label: i18n.language === 'ar' ? sub.title_ar : sub.title_en,
+                value: String(sub.id),
+                image: sub.image,
+            }))
+        : []
+
+
+
+
+    return (
+        <View style={{ flex: 1 }} className='pb-20 bg-white '>
+
+            <CustomHeader title={t('home.postad')} />
+
+            {isConnected ? (
+                <ScrollView className='  pb-44 ' contentContainerStyle={{ paddingBottom: 40 }}>
+
+
+
+                    <View className=' bg-white p-3 px-5'>
+                        <Text className={`text-primary text-xl mb-10  ${i18n.language === "ar" ? 'text-right arabic-font' : 'text-left'}`}>{t('ad.ad_details')}</Text>
+
+
+                        <CustomDropdown
+                            label={t('ad.selectCategory')}
+                            placeholder={t('ad.selectCategoryPlaceholder')}
+                            value={selectedCategory as any}
+                            onSelect={(val) => {
+                                setSelectedCategory(val)
+                                setSelectedSubcategory(null)
+                                formik.setFieldValue('category', val)
+                            }}
+                            options={categoryOptions}
+                        />
+
+                        {selectedCategory && subcategoryOptions.length > 0 && (
+                            <CustomDropdown
+                                label={t('ad.selectSubcategory')}
+                                placeholder={t('ad.selectSubcategoryPlaceholder')}
+                                value={selectedSubcategory as any}
+                                onSelect={(val) => {
+                                    setSelectedSubcategory(val)
+                                    formik.setFieldValue('subcategory', val)
+                                }}
+                                options={subcategoryOptions}
+                            />
+                        )}
+
+
+
+
+
+
+
+                        <CustomImagePicker
+                            label={t("ad.selectImage")}
+                            placeholder={t("ad.taptoselectimage")}
+                            changeText={t("ad.taptoselectimage")}
+                            value={selectedImages}
+                            onImageSelect={(uris) => {
+                                setSelectedImages(uris);
+                                formik.setFieldValue('image', uris);
+                            }}
+                            error={formik.touched.image && formik.errors.image ? formik.errors.image : undefined}
+                        />
+
+
+                        <CustomInput
+                            label={t('ad.adlabel')}
+                            value={formik.values.title}
+                            onChangeText={formik.handleChange('title')}
+                            placeholder={t("ad.titlePlaceholder")}
+                            error={formik.touched.title && formik.errors.title ? formik.errors.title : undefined}
+                        />
+
+                        <CustomTextArea
+                            value={formik.values.description}
+                            label={t('ad.description')}
+                            onChangeText={formik.handleChange('description')}
+                            placeholder={t("ad.descriptionPlaceholder")}
+                            error={formik.touched.description && formik.errors.description ? formik.errors.description : undefined}
+                        />
+
+
+                        <CustomInput
+                            label={t('ad.price')}
+                            value={formik.values.price}
+                            onChangeText={formik.handleChange("price")}
+                            placeholder={t("ad.price")}
+                        />
+
+
+                    </View>
+
+
+
+
+                    <View className=' bg-white p-3 '>
+                        <Text className={`text-primary text-xl mb-5 ${i18n.language === "ar" ? 'text-right arabic-font' : 'text-left'}`}>{t('ad.publisher_info')}</Text>
+                        <CustomInput
+                            label={t('ad.name')}
+                            value={formik.values.name}
+                            onChangeText={formik.handleChange('name')}
+                            placeholder={t("ad.name")}
+                            error={formik.touched.name && formik.errors.name ? formik.errors.name : undefined}
+                        />
+                        <CustomInput
+                            label={t('ad.phone')}
+                            value={formik.values.phone}
+                            onChangeText={formik.handleChange("phone")}
+                            placeholder={t("ad.phone")}
+                            error={formik.touched.phone && formik.errors.phone ? formik.errors.phone : undefined}
+                        />
+
+                        <CustomInput
+                            label={t('ad.email')}
+                            value={formik.values.email}
+                            onChangeText={formik.handleChange("email")}
+                            placeholder={t("ad.email")}
+                            error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
+                        />
+                    </View>
+
+
+
+
+
+
+
+
+                    <View className='px-5'>
+                        <CustomButton
+                            title={isSubmitting ? t('ad.posting') : t('ad.post_ad')}
+                            onPress={formik.handleSubmit}
+                            disabled={isSubmitting}
+                        />
+                    </View>
+                </ScrollView>
+            ) : (<OfflineBanner />)}
+
+
+
+
+        </View>
+    )
+}
