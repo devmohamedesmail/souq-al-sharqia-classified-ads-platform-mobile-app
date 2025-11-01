@@ -3,21 +3,25 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, Text, TouchableOpacity, Linking, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import useFetch from '@/hooks/useFetch'
+import CustomLoading from '@/components/custom/customloading'
 
 export default function Contact() {
     const { t, i18n } = useTranslation();
     const isRTL = i18n.language === 'ar';
+    const { data, loading, error } = useFetch('/settings');
+ 
 
     const handlePhoneCall = () => {
         const phoneNumber = t('contact.phoneNumber');
-        Linking.openURL(`tel:${phoneNumber}`).catch(() => {
+        Linking.openURL(`tel:${data?.data?.phone}`).catch(() => {
             Alert.alert('Error', 'Unable to make phone call');
         });
     };
 
     const handleEmailPress = () => {
         const email = t('contact.emailAddress');
-        Linking.openURL(`mailto:${email}`).catch(() => {
+        Linking.openURL(`mailto:${data?.data?.email}`).catch(() => {
             Alert.alert('Error', 'Unable to open email client');
         });
     };
@@ -37,8 +41,12 @@ export default function Contact() {
                     </Text>
                 </View>
 
-                {/* Contact Buttons */}
-                <View className="gap-5">
+
+            {loading ? (<>
+            <CustomLoading />
+            
+            </>):(
+                 <View className="gap-5">
                     {/* Phone Button */}
                     <TouchableOpacity
                         className="bg-white rounded-2xl shadow-lg overflow-hidden"
@@ -60,7 +68,8 @@ export default function Contact() {
                                     className={`text-base text-blue-600 font-semibold mb-1.5 ${isRTL ? 'text-right' : 'text-left'}`}
                                     style={{ fontFamily: 'Cairo_600SemiBold' }}
                                 >
-                                    {t('contact.phoneNumber')}
+                                    {/* {t('contact.phoneNumber')} */}
+                                    {data.data?.phone}
                                 </Text>
                                 <Text
                                     className={`text-sm text-gray-500 leading-5 ${isRTL ? 'text-right' : 'text-left'}`}
@@ -93,7 +102,8 @@ export default function Contact() {
                                     className={`text-base text-blue-600 font-semibold mb-1.5 ${isRTL ? 'text-right' : 'text-left'}`}
                                     style={{ fontFamily: 'Cairo_600SemiBold' }}
                                 >
-                                    {t('contact.emailAddress')}
+                                    {/* {t('contact.emailAddress')}  */}
+                                    {data.data?.email}
                                 </Text>
                                 <Text
                                     className={`text-sm text-gray-500 leading-5 ${isRTL ? 'text-right' : 'text-left'}`}
@@ -105,6 +115,10 @@ export default function Contact() {
                         </View>
                     </TouchableOpacity>
                 </View>
+            )}
+
+                {/* Contact Buttons */}
+               
             </View>
         </View>
     )
