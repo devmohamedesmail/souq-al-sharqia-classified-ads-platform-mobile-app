@@ -57,40 +57,8 @@ export default function CustomImagePicker({
     }
   }
 
-  const pickImageFromCamera = async () => {
-    try {
-      const permissionResult = await ImagePicker.requestCameraPermissionsAsync()
-      if (permissionResult.granted === false) {
-        Alert.alert('Permission Required', 'Permission to access camera is required!')
-        return
-      }
-      const result = await ImagePicker.launchCameraAsync({
-        allowsEditing,
-        aspect,
-        quality,
-      })
-      if (!result.canceled && result.assets && result.assets[0]) {
-        const imageUri = result.assets[0].uri
-        const newImages = [...selectedImages, imageUri]
-        setSelectedImages(newImages)
-        onImageSelect(newImages)
-      }
-    } catch (error) {
-      console.error('Error taking photo:', error)
-      Alert.alert('Error', 'Failed to take photo')
-    }
-  }
-
   const showImageOptions = () => {
-    Alert.alert(
-      t('ad.select_image_method') || '',
-      t('ad.choose_image_source') || '',
-      [
-        { text: t('ad.camera'), onPress: pickImageFromCamera },
-        { text: t('ad.gallery'), onPress: pickImages },
-        { text: t('ad.cancel'), style: 'cancel' }
-      ]
-    )
+    pickImages()
   }
 
   // Use value prop if provided, otherwise use internal state

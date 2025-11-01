@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "Home",
-    "app": "SOUQ AL SHARQIA",
+    "app": "PALMAAL",
     "searchplaceholder": "Write What u need",
     "postad": "POST AD",
     "support": "Contact Support",
@@ -11,7 +11,8 @@
     "rejectedads": "Rejected Ads",
     "approvedads": "Approved Ads",
     "categories": "Categories",
-    "ads": "Ads"
+    "ads": "Ads",
+    "go_back": "Go Back"
   },
   "ads": {
     "selectImage": "Select Image For Ad",
@@ -136,7 +137,17 @@
     "subcategoryRequired": "Subcategory is required",
     "nameRequired": "Name is required",
     "nameMin": "Name must be at least {{ count }} characters long",
-    "ad_details": "Ad Details"
+    "ad_details": "Ad Details",
+    "report_content": "Report Content",
+    "report_title": "Report Ad",
+    "report_message": "Will Report this ad as not fit",
+    "report": "Report",
+    "reporting": "Reporting...",
+    "report_success": "Ad reported successfully",
+    "report_failed": "Failed to report the ad",
+    "contentPolicyAgreement": "I agree to the content policy",
+    "agreementRequired": "You must agree to the content policy",
+    "fetch_error": "Error fetching ad details"
   },
   "privacy": {
     "title": "Privacy Policy",

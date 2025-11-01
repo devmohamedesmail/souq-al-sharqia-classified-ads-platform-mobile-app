@@ -4,6 +4,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { config } from '@/constants/config';
 import { useNavigation } from 'expo-router';
+import axios from 'axios';
+import { Toast } from 'toastify-react-native';
 
 export default function AdItem({ ad }: any) {
     const { t, i18n } = useTranslation();
@@ -11,9 +13,29 @@ export default function AdItem({ ad }: any) {
 
 
 
+
+
+const ad_details = async(ad:any) => {
+    try {
+          navigation.navigate('ads/details', { ad: JSON.stringify(ad) });
+          const response = await axios.get(`${config.URL}/ad/details/${ad.id}`);
+    } catch (error) {
+        Toast.show({
+            type: 'error',
+            text1: t("ad.fetch_error"),
+            position: 'bottom',
+        })
+    }
+  
+}
+
+
+
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate('ads/details', { ad: JSON.stringify(ad) })}
+            // onPress={() => navigation.navigate('ads/details', { ad: JSON.stringify(ad) })}
+            // onPress={() => navigation.navigate('ads/details', { ad_id : ad.id })}
+            onPress={()=>ad_details(ad)}
             className='m-2 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200'
         >
             {/* Image Swiper */}

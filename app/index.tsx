@@ -81,8 +81,8 @@ export default function Home() {
 
 
         <View className='flex flex-row items-center '>
-          <Text className='text-white  arabic-font text-xl'> {t("home.app")}</Text>
-          <Logo width={70} height={70} />
+          {/* <Text className='text-white  arabic-font text-xl'> {t("home.app")}</Text> */}
+          <Logo width={100} height={50} />
         </View>
       </View>
 

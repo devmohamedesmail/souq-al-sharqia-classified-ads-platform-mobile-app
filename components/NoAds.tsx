@@ -25,10 +25,10 @@ export default function NoAds() {
             </Text>
 
             <TouchableOpacity
-                onPress={() => router.push('/')}
+                onPress={() => router.back()}
 
                 className=" bg-primary px-6 w-full py-3 rounded-full flex-row items-center justify-center mt-10">
-                <Text className={`text-white ${i18n.language === 'ar' ? 'arabic-font-bold' : 'text-left'}`}>{t('home.title')}</Text>
+                <Text className={`text-white ${i18n.language === 'ar' ? 'arabic-font-bold' : 'text-left'}`}>{t('home.go_back')}</Text>
             </TouchableOpacity>
 
         </View>

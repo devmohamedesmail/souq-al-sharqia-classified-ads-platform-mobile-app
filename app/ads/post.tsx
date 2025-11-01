@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, ScrollView, Text } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
 
 import { useRouter } from 'expo-router';
 import CustomHeader from '@/components/custom/customheader';
@@ -19,6 +19,7 @@ import { AuthContext } from '@/context/auth_context';
 import { useDeviceId } from '@/hooks/useDeviceId';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function PostAd() {
@@ -32,6 +33,7 @@ export default function PostAd() {
     const { auth } = useContext(AuthContext)
     const { deviceId, shortDeviceId, isLoading } = useDeviceId();
     const { isConnected } = useNetwork();
+    const [agreementChecked, setAgreementChecked] = useState(false);
 
 
 
@@ -72,6 +74,8 @@ export default function PostAd() {
                     ? schema.required(t('ad.subcategoryRequired'))
                     : schema.notRequired();
             }),
+        agreement: Yup.boolean()
+            .oneOf([true], t('ad.agreementRequired')),
     })
 
 
@@ -87,6 +91,7 @@ export default function PostAd() {
             email: '',
             category: '',
             subcategory: '',
+            agreement: false,
         },
         validationSchema,
         onSubmit: async (values) => {
@@ -139,6 +144,7 @@ export default function PostAd() {
                     setSelectedImages([]);
                     setSelectedCategory(null);
                     setSelectedSubcategory(null);
+                    setAgreementChecked(false);
 
                 } else {
                     Toast.show({
@@ -301,9 +307,37 @@ export default function PostAd() {
 
 
 
-
-
-
+                     <View className='bg-white p-5 mb-4'>
+                        <TouchableOpacity 
+                            onPress={() => {
+                                const newValue = !agreementChecked;
+                                setAgreementChecked(newValue);
+                                formik.setFieldValue('agreement', newValue);
+                            }}
+                            className='flex-row items-start'
+                        >
+                            <View className={`w-6 h-6 border-2 rounded mr-3 mt-1 items-center justify-center ${agreementChecked ? 'bg-blue-600 border-blue-600' : 'border-gray-300'}`}>
+                                {agreementChecked && (
+                                    <Ionicons name="checkmark" size={16} color="white" />
+                                )}
+                            </View>
+                            <Text 
+                                className={`flex-1 text-gray-700 leading-6 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}
+                                style={{ fontFamily: 'Cairo_400Regular' }}
+                            >
+                                {t('ad.contentPolicyAgreement') || 'أوافق على عدم نشر إعلانات تحتوي على محتوى غير لائق أو مخالف لسياسة المنصة'}
+                            </Text>
+                        </TouchableOpacity>
+                        
+                        {formik.touched.agreement && formik.errors.agreement && (
+                            <Text 
+                                className='text-red-500 text-sm mt-2'
+                                style={{ fontFamily: 'Cairo_400Regular' }}
+                            >
+                                {formik.errors.agreement}
+                            </Text>
+                        )}
+                     </View>
 
 
                     <View className='px-5'>
