@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
 
 import { useRouter } from 'expo-router';
@@ -34,14 +34,24 @@ export default function PostAd() {
     const { deviceId, shortDeviceId, isLoading } = useDeviceId();
     const { isConnected } = useNetwork();
     const [agreementChecked, setAgreementChecked] = useState(false);
+    const [places, setPlaces] = useState<any[]>([]);
 
 
 
 
 
 
-
-
+    const fetchplaces = async () => {
+        try {
+            const response = await axios.get(`${config.URL}/places`);
+            setPlaces(response.data);
+        } catch (error) {
+            console.error("Error fetching places: ", error);
+        }
+    }
+    useEffect(() => { 
+        fetchplaces ()
+    }, [])
 
 
 
@@ -189,7 +199,12 @@ export default function PostAd() {
         : []
 
 
-
+const placeOptions = Array.isArray(places)
+        ? places.map((place: any) => ({
+            label: i18n.language === 'ar' ? place.name_ar : place.name_en,
+            value: String(place.id),
+        }))
+        : []
 
     return (
         <View style={{ flex: 1 }} className='pb-20 bg-white '>
@@ -203,6 +218,21 @@ export default function PostAd() {
 
                     <View className=' bg-white p-3 px-5'>
                         <Text className={`text-primary text-xl mb-10  ${i18n.language === "ar" ? 'text-right arabic-font' : 'text-left'}`}>{t('ad.ad_details')}</Text>
+
+
+
+                        <CustomDropdown
+                            label={t('ad.selectPlace')}
+                            placeholder={t('ad.selectPlacePlaceholder')}
+                            value={selectedCategory as any}
+                            onSelect={(val) => {
+                                setSelectedCategory(val)
+                                setSelectedSubcategory(null)
+                                formik.setFieldValue('category', val)
+                            }}
+                            options={placeOptions}
+                        />
+
 
 
                         <CustomDropdown
@@ -307,8 +337,8 @@ export default function PostAd() {
 
 
 
-                     <View className='bg-white p-5 mb-4'>
-                        <TouchableOpacity 
+                    <View className='bg-white p-5 mb-4'>
+                        <TouchableOpacity
                             onPress={() => {
                                 const newValue = !agreementChecked;
                                 setAgreementChecked(newValue);
@@ -321,23 +351,23 @@ export default function PostAd() {
                                     <Ionicons name="checkmark" size={16} color="white" />
                                 )}
                             </View>
-                            <Text 
+                            <Text
                                 className={`flex-1 text-gray-700 leading-6 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}
                                 style={{ fontFamily: 'Cairo_400Regular' }}
                             >
                                 {t('ad.contentPolicyAgreement') || 'أوافق على عدم نشر إعلانات تحتوي على محتوى غير لائق أو مخالف لسياسة المنصة'}
                             </Text>
                         </TouchableOpacity>
-                        
+
                         {formik.touched.agreement && formik.errors.agreement && (
-                            <Text 
+                            <Text
                                 className='text-red-500 text-sm mt-2'
                                 style={{ fontFamily: 'Cairo_400Regular' }}
                             >
                                 {formik.errors.agreement}
                             </Text>
                         )}
-                     </View>
+                    </View>
 
 
                     <View className='px-5'>

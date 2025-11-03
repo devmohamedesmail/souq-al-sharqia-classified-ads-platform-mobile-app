@@ -12,7 +12,8 @@
     "approvedads": "Approved Ads",
     "categories": "Categories",
     "ads": "Ads",
-    "go_back": "Go Back"
+    "go_back": "Go Back",
+    "places": "Places"
   },
   "ads": {
     "selectImage": "Select Image For Ad",
@@ -147,7 +148,10 @@
     "report_failed": "Failed to report the ad",
     "contentPolicyAgreement": "I agree to the content policy",
     "agreementRequired": "You must agree to the content policy",
-    "fetch_error": "Error fetching ad details"
+    "fetch_error": "Error fetching ad details",
+    "selectPlace": "Select Place",
+    "allPlaces": "All Places",
+    "selectPlacePlaceholder": "Choose a place"
   },
   "privacy": {
     "title": "Privacy Policy",
@@ -178,7 +182,7 @@
     "phoneDescription": "Call us directly for immediate assistance",
     "emailDescription": "Send us an email and we'll get back to you soon"
   },
-  "offlineBanner":{
+  "offlineBanner": {
     "noConnection": "No Internet Connection"
   }
 }

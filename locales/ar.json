@@ -12,7 +12,8 @@
     "approvedads": "الإعلانات الفعاله",
     "categories": " الاقسام ",
     "ads": " الاعلانات ",
-    "go_back": " العودة للخلف "
+    "go_back": " العودة للخلف ",
+    "places": " الأماكن "
   },
   "auth": {
     "email": "البريد الإلكتروني",
@@ -143,7 +144,10 @@
     "report_failed": "فشل في الإبلاغ عن الإعلان",
     "contentPolicyAgreement": "أوافق على سياسة المحتوى",
     "agreementRequired": "يجب عليك الموافقة على سياسة المحتوى",
-    "fetch_error": "خطأ في جلب تفاصيل الإعلان"
+    "fetch_error": "خطأ في جلب تفاصيل الإعلان",
+    "selectPlace": " اختر المكان ",
+    "allPlaces": " جميع الأماكن ",
+    "selectPlacePlaceholder": " اختر مكان "
   },
   "privacy": {
     "title": "سياسة الخصوصية",

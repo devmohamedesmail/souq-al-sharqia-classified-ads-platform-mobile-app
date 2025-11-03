@@ -119,19 +119,10 @@ export default function Account() {
 
   return (
     <View className="flex-1 bg-gray-50">
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-
-      {/* Header */}
-
       <CustomHeader title={t('account.settings')} />
-
-
-
       {/* Settings Content */}
       <ScrollView className="flex-1">
         {/* Profile Section */}
-
-
         {auth ? (
           <View className="bg-white mx-4 mt-4 rounded-xl shadow-sm">
             <View className="p-6 items-center border-b border-gray-100">

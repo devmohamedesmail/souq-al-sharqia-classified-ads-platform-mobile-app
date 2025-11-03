@@ -18,6 +18,8 @@ import { useDeviceId } from '@/hooks/useDeviceId';
 import { AuthContext } from '@/context/auth_context';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
+import PlacesHomeSection from '@/components/PlacesHomeSection';
+
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -48,11 +50,18 @@ export default function Home() {
   }
 
 
-
+const fetch_places = async () => {
+  try {
+    const result = await axios.get(`${config.URL}/places`)
+  } catch (error) {
+    console.log(error)  
+  }
+}
 
   useEffect(() => {
     fetch_rejected_ads();
-    fetch_accepted_ads()
+    fetch_accepted_ads();
+    fetch_places()
   }, [])
 
 
@@ -100,6 +109,10 @@ export default function Home() {
               image={postAd} />
 
 
+
+              <PlacesHomeSection />
+
+
             {/* Categories */}
             <View className='bg-white my-1'>
               <Text className={` p-2 ${i18n.language === 'ar' ? 'text-right arabic-font' : ''} `}>{t('home.categories')}</Text>
@@ -115,10 +128,8 @@ export default function Home() {
                       image={category.image}
                       count={category.subcategories.length || 0}
                       onPress={() =>
-
                         navigation.navigate('categories/subcategories', {
                           category: JSON.stringify(category),
-
                         })
                       }
 
