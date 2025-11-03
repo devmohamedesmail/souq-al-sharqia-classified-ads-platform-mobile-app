@@ -20,6 +20,7 @@ import { useDeviceId } from '@/hooks/useDeviceId';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
 import { Ionicons } from '@expo/vector-icons';
+import CustomMultiSelect from '@/components/custom/custommultiselect';
 
 
 export default function PostAd() {
@@ -34,9 +35,8 @@ export default function PostAd() {
     const { deviceId, shortDeviceId, isLoading } = useDeviceId();
     const { isConnected } = useNetwork();
     const [agreementChecked, setAgreementChecked] = useState(false);
-    const [places, setPlaces] = useState<any[]>([]);
-
-
+    const [placesData, setPlacesData] = useState<any[]>([]);
+    const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
 
 
 
@@ -44,13 +44,18 @@ export default function PostAd() {
     const fetchplaces = async () => {
         try {
             const response = await axios.get(`${config.URL}/places`);
-            setPlaces(response.data);
+            setPlacesData(response.data);
         } catch (error) {
-            console.error("Error fetching places: ", error);
+            Toast.show({
+                type: 'error',
+                text1: t('ad.error'),
+                text2: t('ad.please_try_again'),
+                position: 'top',
+            })
         }
     }
-    useEffect(() => { 
-        fetchplaces ()
+    useEffect(() => {
+        fetchplaces()
     }, [])
 
 
@@ -102,6 +107,7 @@ export default function PostAd() {
             category: '',
             subcategory: '',
             agreement: false,
+            places: [],
         },
         validationSchema,
         onSubmit: async (values) => {
@@ -118,6 +124,10 @@ export default function PostAd() {
                 formData.append('price', values.price || '');
                 formData.append('title', values.title || '');
                 formData.append('description', values.description || '');
+
+                selectedPlaces.forEach((placeId) => {
+                    formData.append('places[]', placeId);
+                });
 
                 selectedImages.forEach((imgUri) => {
                     const filename = imgUri.split('/').pop() || 'image.jpg';
@@ -142,7 +152,7 @@ export default function PostAd() {
                         },
                     }
                 )
-                console.log("Ad post response: ", response.status)
+
                 if (response.status == 201) {
                     Toast.show({
                         type: 'success',
@@ -155,6 +165,7 @@ export default function PostAd() {
                     setSelectedCategory(null);
                     setSelectedSubcategory(null);
                     setAgreementChecked(false);
+                    setSelectedPlaces([]);
 
                 } else {
                     Toast.show({
@@ -199,8 +210,8 @@ export default function PostAd() {
         : []
 
 
-const placeOptions = Array.isArray(places)
-        ? places.map((place: any) => ({
+    const placeOptions = Array.isArray(placesData)
+        ? placesData.map((place: any) => ({
             label: i18n.language === 'ar' ? place.name_ar : place.name_en,
             value: String(place.id),
         }))
@@ -211,7 +222,7 @@ const placeOptions = Array.isArray(places)
 
             <CustomHeader title={t('home.postad')} />
 
-            {isConnected ? (
+            {isConnected  && placesData.length > 0 ? (
                 <ScrollView className='  pb-44 ' contentContainerStyle={{ paddingBottom: 40 }}>
 
 
@@ -221,16 +232,24 @@ const placeOptions = Array.isArray(places)
 
 
 
-                        <CustomDropdown
+
+
+                        <CustomMultiSelect
                             label={t('ad.selectPlace')}
                             placeholder={t('ad.selectPlacePlaceholder')}
-                            value={selectedCategory as any}
-                            onSelect={(val) => {
-                                setSelectedCategory(val)
-                                setSelectedSubcategory(null)
-                                formik.setFieldValue('category', val)
+                            value={selectedPlaces}
+                            onSelect={(values) => {
+                                setSelectedPlaces(values);
+                                formik.setFieldValue('places', values);
                             }}
                             options={placeOptions}
+                            error={
+                                formik.touched.places && formik.errors.places
+                                    ? typeof formik.errors.places === 'string'
+                                        ? formik.errors.places
+                                        : formik.errors.places[0] // Get first error if it's an array
+                                    : undefined
+                            }
                         />
 
 

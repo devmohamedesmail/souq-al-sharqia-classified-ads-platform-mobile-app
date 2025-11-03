@@ -151,7 +151,11 @@
     "fetch_error": "Error fetching ad details",
     "selectPlace": "Select Place",
     "allPlaces": "All Places",
-    "selectPlacePlaceholder": "Choose a place"
+    "selectPlacePlaceholder": "Choose a place",
+    "done": "Done",
+    "error":"Error Happened",
+    "please_try_again":"Please try again"
+
   },
   "privacy": {
     "title": "Privacy Policy",

@@ -36,7 +36,7 @@ const ad_details = async(ad:any) => {
             // onPress={() => navigation.navigate('ads/details', { ad: JSON.stringify(ad) })}
             // onPress={() => navigation.navigate('ads/details', { ad_id : ad.id })}
             onPress={()=>ad_details(ad)}
-            className='m-2 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200'
+            className='m-2 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 mb-4'
         >
             {/* Image Swiper */}
             {ad.images && ad.images.length > 0 ? (

@@ -147,7 +147,10 @@
     "fetch_error": "خطأ في جلب تفاصيل الإعلان",
     "selectPlace": " اختر المكان ",
     "allPlaces": " جميع الأماكن ",
-    "selectPlacePlaceholder": " اختر مكان "
+    "selectPlacePlaceholder": " اختر مكان ",
+    "done": " تم ",
+    "error": " حدث خطأ ",
+    "please_try_again": " يرجى المحاولة مرة أخرى "
   },
   "privacy": {
     "title": "سياسة الخصوصية",
