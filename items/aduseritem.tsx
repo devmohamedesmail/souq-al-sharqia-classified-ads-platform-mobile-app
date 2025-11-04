@@ -85,7 +85,9 @@ export default function AdUserItem({ item }: any) {
 
             {/* Content */}
             <View className='p-4'>
-                <Text className='' style={{ color: 'green' }}>{item.views} {t('ad.views')}</Text>
+                {item.reason ? ( <Text className='text-red-600'> {item.reason} </Text>):(<></>)}
+
+                {item.status === 'approved' ? ( <Text className='' style={{ color: 'green' }}>{item.views} {t('ad.views')}</Text>) :(<></>)}
                 <Text
                     className={`text-lg font-bold text-gray-900 mb-2 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}
                     style={{ fontFamily: 'Cairo_700Bold' }}
@@ -99,7 +101,7 @@ export default function AdUserItem({ item }: any) {
                         className='text-xl font-bold text-green-600 mb-2'
                         style={{ fontFamily: 'Cairo_700Bold' }}
                     >
-                        {item.price} {i18n.language === 'ar' ? 'ريال' : 'SAR'}
+                        {item.price} {i18n.language === 'ar' ? config.CURRENCY_AR : config.CURRENCY_EN}
                     </Text>
                 )}
 

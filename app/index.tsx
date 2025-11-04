@@ -50,19 +50,19 @@ export default function Home() {
   }
 
 
-const fetch_places = async () => {
-  try {
-    const result = await axios.get(`${config.URL}/places`)
-  } catch (error) {
-    console.log(error)  
-  }
-}
+// const fetch_places = async () => {
+//   try {
+//     const result = await axios.get(`${config.URL}/places`)
+//   } catch (error) {
+//     console.log(error)  
+//   }
+// }
 
   useEffect(() => {
     fetch_rejected_ads();
     fetch_accepted_ads();
-    fetch_places()
-  }, [])
+    // fetch_places()
+  }, [auth, deviceId, shortDeviceId]);
 
 
   // Show loading while device ID is being loaded

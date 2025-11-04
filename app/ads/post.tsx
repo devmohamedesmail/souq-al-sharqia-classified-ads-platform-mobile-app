@@ -60,8 +60,6 @@ export default function PostAd() {
 
 
 
-
-
     const validationSchema = Yup.object().shape({
         title: Yup.string()
             .required(t('ad.titleRequired'))
@@ -115,7 +113,7 @@ export default function PostAd() {
 
             try {
                 const formData = new FormData()
-                formData.append('user_id', auth?.user.id || shortDeviceId || ''); // Use deviceId as fallback
+                formData.append('user_id', auth?.user.id || shortDeviceId || ''); 
                 formData.append('category_id', selectedCategory || '');
                 formData.append('subcategory_id', selectedSubcategory || '');
                 formData.append('name', values.name || '');
@@ -125,23 +123,22 @@ export default function PostAd() {
                 formData.append('title', values.title || '');
                 formData.append('description', values.description || '');
 
+                // formData.append('places', JSON.stringify(selectedPlaces));
                 selectedPlaces.forEach((placeId) => {
                     formData.append('places[]', placeId);
                 });
 
-                selectedImages.forEach((imgUri) => {
-                    const filename = imgUri.split('/').pop() || 'image.jpg';
-                    const match = /\.(\w+)$/.exec(filename);
-                    const type = match ? `image/${match[1]}` : 'image/jpeg';
-                    const imageFile = {
+               
+                selectedImages.forEach((imgUri, index) => {
+                    const uriParts = imgUri.split('.');
+                    const fileType = uriParts[uriParts.length - 1];
+
+                    formData.append('images[]', {
                         uri: imgUri,
-                        name: filename,
-                        type: type,
-                    } as any;
-                    formData.append('images[]', imageFile);
+                        name: `photo_${index}.${fileType}`,
+                        type: `image/${fileType}`,
+                    } as any);
                 });
-
-
 
                 const response = await axios.post(
                     `${config.URL}/post/ad`,
@@ -152,6 +149,7 @@ export default function PostAd() {
                         },
                     }
                 )
+
 
                 if (response.status == 201) {
                     Toast.show({
@@ -168,6 +166,7 @@ export default function PostAd() {
                     setSelectedPlaces([]);
 
                 } else {
+
                     Toast.show({
                         type: 'error',
                         text1: t('ad.failed')
@@ -177,6 +176,7 @@ export default function PostAd() {
 
                 // router.back()
             } catch (error: any) {
+                
                 Toast.show({
                     type: 'error',
                     text1: t('ad.failed')
@@ -222,7 +222,7 @@ export default function PostAd() {
 
             <CustomHeader title={t('home.postad')} />
 
-            {isConnected  && placesData.length > 0 ? (
+            {isConnected && placesData.length > 0 ? (
                 <ScrollView className='  pb-44 ' contentContainerStyle={{ paddingBottom: 40 }}>
 
 
