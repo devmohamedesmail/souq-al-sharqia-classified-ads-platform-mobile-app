@@ -13,7 +13,8 @@
     "categories": " الاقسام ",
     "ads": " الاعلانات ",
     "go_back": " العودة للخلف ",
-    "places": " الأماكن "
+    "places": " الأماكن ",
+    "pleasewait": " يرجى الانتظار... "
   },
   "auth": {
     "email": "البريد الإلكتروني",
@@ -150,7 +151,8 @@
     "selectPlacePlaceholder": " اختر مكان ",
     "done": " تم ",
     "error": " حدث خطأ ",
-    "please_try_again": " يرجى المحاولة مرة أخرى "
+    "please_try_again": " يرجى المحاولة مرة أخرى ",
+    "placesRequired": " المكان مطلوب "
   },
   "privacy": {
     "title": "سياسة الخصوصية",

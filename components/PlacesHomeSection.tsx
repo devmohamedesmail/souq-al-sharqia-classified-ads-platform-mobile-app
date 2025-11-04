@@ -16,7 +16,7 @@ export default function PlacesHomeSection() {
         <View className='bg-white my-1'>
             <Text className={` p-2 ${i18n.language === 'ar' ? 'text-right arabic-font' : ''} `}>{t('home.places')}</Text>
 
-            {loading ? (<></>) : (
+            {loading ? (<Text className='text-center p-3'>{t('home.pleasewait')}</Text>) : (
                 <>
                     {data && data.map((place: any) => (
                         <HomeBtnItem

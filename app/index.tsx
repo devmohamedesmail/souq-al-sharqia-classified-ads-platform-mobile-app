@@ -19,6 +19,7 @@ import { AuthContext } from '@/context/auth_context';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
 import PlacesHomeSection from '@/components/PlacesHomeSection';
+import { Toast } from 'toastify-react-native';
 
 
 export default function Home() {
@@ -37,7 +38,12 @@ export default function Home() {
       const result = await axios.get(`${config.URL}/show/user/rejected/ads/${auth ? auth?.user?.id : shortDeviceId}`)
       setRejectedads(result.data)
     } catch (error) {
-      console.log(error)
+      Toast.show({
+        type: 'error',
+        text1: t('ad.error'),
+        text2: t('ad.please_try_again'),
+
+      })
     }
   }
   const fetch_accepted_ads = async () => {
@@ -45,24 +51,22 @@ export default function Home() {
       const result = await axios.get(`${config.URL}/show/user/accepted/ads/${auth ? auth?.user?.id : shortDeviceId}`)
       setAcceptedads(result.data)
     } catch (error) {
-      console.log(error)
+      Toast.show({
+        type: 'error',
+        text1: t('ad.error'),
+        text2: t('ad.please_try_again'),
+
+      })
     }
   }
 
 
-// const fetch_places = async () => {
-//   try {
-//     const result = await axios.get(`${config.URL}/places`)
-//   } catch (error) {
-//     console.log(error)  
-//   }
-// }
+  
 
   useEffect(() => {
     fetch_rejected_ads();
     fetch_accepted_ads();
-    // fetch_places()
-  }, [auth, deviceId, shortDeviceId]);
+  }, [auth, shortDeviceId]);
 
 
   // Show loading while device ID is being loaded
@@ -110,7 +114,7 @@ export default function Home() {
 
 
 
-              <PlacesHomeSection />
+            <PlacesHomeSection />
 
 
             {/* Categories */}

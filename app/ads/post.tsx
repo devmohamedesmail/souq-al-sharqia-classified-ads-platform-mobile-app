@@ -79,14 +79,13 @@ export default function PostAd() {
         email: Yup.string()
             .email(t('ad.emailInvalid')),
         // .required(t('ad.emailRequired')),
+        places: Yup.array()
+            .min(1, t('ad.placesRequired'))
+            .required(t('ad.placesRequired')),
         category: Yup.string()
             .required(t('ad.categoryRequired')),
         subcategory: Yup.string()
-            .when('category', ([category], schema) => {
-                return category
-                    ? schema.required(t('ad.subcategoryRequired'))
-                    : schema.notRequired();
-            }),
+            .required(t('ad.subcategoryRequired')),
         agreement: Yup.boolean()
             .oneOf([true], t('ad.agreementRequired')),
     })
@@ -113,7 +112,7 @@ export default function PostAd() {
 
             try {
                 const formData = new FormData()
-                formData.append('user_id', auth?.user.id || shortDeviceId || ''); 
+                formData.append('user_id', auth?.user.id || shortDeviceId || '');
                 formData.append('category_id', selectedCategory || '');
                 formData.append('subcategory_id', selectedSubcategory || '');
                 formData.append('name', values.name || '');
@@ -128,7 +127,7 @@ export default function PostAd() {
                     formData.append('places[]', placeId);
                 });
 
-               
+
                 selectedImages.forEach((imgUri, index) => {
                     const uriParts = imgUri.split('.');
                     const fileType = uriParts[uriParts.length - 1];
@@ -176,7 +175,7 @@ export default function PostAd() {
 
                 // router.back()
             } catch (error: any) {
-                
+
                 Toast.show({
                     type: 'error',
                     text1: t('ad.failed')
@@ -264,7 +263,9 @@ export default function PostAd() {
                                 formik.setFieldValue('category', val)
                             }}
                             options={categoryOptions}
+                            error={formik.touched.category && formik.errors.category ? formik.errors.category : undefined}
                         />
+                       
 
                         {selectedCategory && subcategoryOptions.length > 0 && (
                             <CustomDropdown
@@ -276,6 +277,7 @@ export default function PostAd() {
                                     formik.setFieldValue('subcategory', val)
                                 }}
                                 options={subcategoryOptions}
+                                error={formik.touched.subcategory && formik.errors.subcategory ? formik.errors.subcategory : undefined}
                             />
                         )}
 

@@ -13,6 +13,7 @@ import CustomTextArea from '@/components/custom/customtextarea'
 import CustomButton from '@/components/custom/custombutton'
 import useFetch from '@/hooks/useFetch'
 import CustomDropdown from '@/components/custom/customdropdown'
+import CustomMultiSelect from '@/components/custom/custommultiselect'
 import { config } from '@/constants/config'
 import { AuthContext } from '@/context/auth_context';
 import { useDeviceId } from '@/hooks/useDeviceId';
@@ -27,17 +28,55 @@ export default function EditAd() {
     const { data } = useFetch('/categories')
     const [selectedCategory, setSelectedCategory] = useState<string | null>(adData.category_id ? String(adData.category_id) : null)
     const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(adData.subcategory_id ? String(adData.subcategory_id) : null)
-     const { auth } = useContext(AuthContext)
+    const { auth } = useContext(AuthContext)
     const { deviceId, shortDeviceId, isLoading } = useDeviceId();
+    const [placesData, setPlacesData] = useState<any[]>([]);
+    const [selectedPlaces, setSelectedPlaces] = useState<string[]>(adData.places || []);
 
+    const fetchplaces = async () => {
+        try {
+            const response = await axios.get(`${config.URL}/places`);
+            setPlacesData(response.data);
+        } catch (error) {
+            console.error('Error fetching places:', error);
+        }
+    }
 
+    useEffect(() => {
+        fetchplaces();
+    }, [])
 
-    const validationSchema = Yup.object().shape({
-        title: Yup.string().required('Meal title is required').min(2, 'Title must be at least 2 characters'),
-        description: Yup.string().required('Description is required').min(10, 'Description must be at least 10 characters'),
-        price: Yup.number().required('Price is required').positive('Price must be positive').typeError('Please enter a valid price'),
-        image: Yup.string().required('Meal image is required')
-    })
+  
+
+       const validationSchema = Yup.object().shape({
+            title: Yup.string()
+                .required(t('ad.titleRequired'))
+                .min(2, t('ad.titleMin', { count: 2 })),
+            description: Yup.string()
+                .required(t('ad.descriptionRequired'))
+                .min(10, t('ad.descriptionMin', { count: 10 })),
+            phone: Yup.string()
+                .required(t('ad.phoneRequired'))
+                .matches(/^[0-9]+$/, t('ad.phoneInvalid'))
+                .min(8, t('ad.phoneTooShort'))
+                .max(15, t('ad.phoneTooLong')),
+    
+            name: Yup.string()
+                .required(t('ad.nameRequired'))
+                .min(2, t('ad.nameMin', { count: 2 })),
+            email: Yup.string()
+                .email(t('ad.emailInvalid')),
+            // .required(t('ad.emailRequired')),
+            places: Yup.array()
+                .min(1, t('ad.placesRequired'))
+                .required(t('ad.placesRequired')),
+            category: Yup.string()
+                .required(t('ad.categoryRequired')),
+            subcategory: Yup.string()
+                .required(t('ad.subcategoryRequired')),
+            agreement: Yup.boolean()
+                .oneOf([true], t('ad.agreementRequired')),
+        })
 
     const formik = useFormik({
         initialValues: {
@@ -50,8 +89,9 @@ export default function EditAd() {
             email: adData.email || '',
             category: adData.category_id ? String(adData.category_id) : '',
             subcategory: adData.subcategory_id ? String(adData.subcategory_id) : '',
+            places: adData.places || [],
         },
-        // validationSchema,
+        validationSchema,
         enableReinitialize: true,
         onSubmit: async (values) => {
             setIsSubmitting(true)
@@ -66,17 +106,24 @@ export default function EditAd() {
                 formData.append('price', values.price || '')
                 formData.append('title', values.title || '')
                 formData.append('description', values.description || '')
-                selectedImages.forEach((imgUri) => {
-                    const filename = imgUri.split('/').pop() || 'image.jpg'
-                    const match = /\.(\w+)$/.exec(filename)
-                    const type = match ? `image/${match[1]}` : 'image/jpeg'
-                    const imageFile = {
+                
+                selectedPlaces.forEach((placeId) => {
+                    formData.append('places[]', placeId);
+                });
+
+
+                selectedImages.forEach((imgUri, index) => {
+                    const uriParts = imgUri.split('.');
+                    const fileType = uriParts[uriParts.length - 1];
+
+                    formData.append('images[]', {
                         uri: imgUri,
-                        name: filename,
-                        type: type,
-                    } as any
-                    formData.append('images[]', imageFile)
-                })
+                        name: `photo_${index}.${fileType}`,
+                        type: `image/${fileType}`,
+                    } as any);
+                });
+
+
                 await axios.post(
                     `${config.URL}/ad/update/${adData.id}`,
                     formData,
@@ -84,9 +131,10 @@ export default function EditAd() {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
                 )
-                Toast.show({ 
-                    type: 'success', 
-                    text1: t('ad.editsuccess') })
+                Toast.show({
+                    type: 'success',
+                    text1: t('ad.editsuccess')
+                })
                 router.back()
             } catch (error: any) {
                 Toast.show({ type: 'error', text1: t('ad.editfailed') })
@@ -117,10 +165,36 @@ export default function EditAd() {
             }))
         : []
 
+    // Prepare place options
+    const placeOptions = Array.isArray(placesData)
+        ? placesData.map((place: any) => ({
+            label: i18n.language === 'ar' ? place.name_ar : place.name_en,
+            value: String(place.id),
+            image: place.image,
+        }))
+        : []
+
     return (
         <View style={{ flex: 1 }} className='pb-20 bg-white'>
             <CustomHeader title={t('ad.edit_ad')} />
             <ScrollView className='px-4 pt-10 pb-44' contentContainerStyle={{ paddingBottom: 40 }}>
+                <CustomMultiSelect
+                    label={t('ad.selectPlace')}
+                    placeholder={t('ad.selectPlacePlaceholder')}
+                    value={selectedPlaces}
+                    onSelect={(values) => {
+                        setSelectedPlaces(values);
+                        formik.setFieldValue('places', values);
+                    }}
+                    options={placeOptions}
+                    error={
+                        formik.touched.places && formik.errors.places
+                            ? typeof formik.errors.places === 'string'
+                                ? formik.errors.places
+                                : String(formik.errors.places)
+                            : undefined
+                    }
+                />
                 <CustomDropdown
                     label={t('ad.selectCategory')}
                     placeholder={t('ad.selectCategoryPlaceholder')}
@@ -131,6 +205,7 @@ export default function EditAd() {
                         formik.setFieldValue('category', val)
                     }}
                     options={categoryOptions}
+                    error={formik.touched.category && formik.errors.category ? formik.errors.category : undefined}
                 />
                 {selectedCategory && subcategoryOptions.length > 0 && (
                     <CustomDropdown
@@ -142,6 +217,7 @@ export default function EditAd() {
                             formik.setFieldValue('subcategory', val)
                         }}
                         options={subcategoryOptions}
+                        error={formik.touched.subcategory && formik.errors.subcategory ? formik.errors.subcategory : undefined}
                     />
                 )}
                 <CustomImagePicker

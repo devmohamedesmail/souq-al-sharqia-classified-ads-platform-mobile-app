@@ -13,7 +13,8 @@
     "categories": "Categories",
     "ads": "Ads",
     "go_back": "Go Back",
-    "places": "Places"
+    "places": "Places",
+    "pleasewait": "Please wait..."
   },
   "ads": {
     "selectImage": "Select Image For Ad",
@@ -154,7 +155,9 @@
     "selectPlacePlaceholder": "Choose a place",
     "done": "Done",
     "error":"Error Happened",
-    "please_try_again":"Please try again"
+    "please_try_again":"Please try again",
+    "placesRequired":"Place is required"
+  
 
   },
   "privacy": {
