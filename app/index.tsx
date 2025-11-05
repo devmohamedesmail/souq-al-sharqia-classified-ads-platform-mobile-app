@@ -5,68 +5,71 @@ import { useTranslation } from 'react-i18next';
 import HomeBtnItem from '@/items/homebtnitem';
 import help from '../assets/images/help.png'
 import postAd from '../assets/images/post.png'
-import { useNavigation, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Search from '@/components/Search';
 import Logo from '@/components/logo';
 import CustomLoading from '@/components/custom/customloading';
 import useFetch from '@/hooks/useFetch';
 import rejected from "../assets/images/cross.png"
 import approved from "../assets/images/approve.png"
-import axios from 'axios';
-import { config } from '@/constants/config';
 import { useDeviceId } from '@/hooks/useDeviceId';
 import { AuthContext } from '@/context/auth_context';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
 import PlacesHomeSection from '@/components/PlacesHomeSection';
-import { Toast } from 'toastify-react-native';
 
 
 export default function Home() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const { data, loading, error } = useFetch('/categories')
-  const navigation: any = useNavigation()
+  // const navigation: any = useNavigation()
   const [rejectedads, setRejectedads] = useState<any>(null);
   const [acceptedads, setAcceptedads] = useState<any>(null);
   const { deviceId, shortDeviceId, isLoading } = useDeviceId();
   const { auth } = useContext(AuthContext)
   const { isConnected } = useNetwork();
-
-  const fetch_rejected_ads = async () => {
-    try {
-      const result = await axios.get(`${config.URL}/show/user/rejected/ads/${auth ? auth?.user?.id : shortDeviceId}`)
-      setRejectedads(result.data)
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: t('ad.error'),
-        text2: t('ad.please_try_again'),
-
-      })
-    }
-  }
-  const fetch_accepted_ads = async () => {
-    try {
-      const result = await axios.get(`${config.URL}/show/user/accepted/ads/${auth ? auth?.user?.id : shortDeviceId}`)
-      setAcceptedads(result.data)
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: t('ad.error'),
-        text2: t('ad.please_try_again'),
-
-      })
-    }
-  }
+  const { data: categories, loading: categoriesLoading, error: categoriesError } = useFetch('/categories')
+  const { data: rejected_ads, loading: rejected_ads_loading, error: rejected_ads_error } = useFetch(`/show/user/rejected/ads/${auth ? auth?.user?.id : shortDeviceId}`)
+  const { data: accepted_ads, loading: accepted_ads_loading, error: accepted_ads_error } = useFetch(`/show/user/accepted/ads/${auth ? auth?.user?.id : shortDeviceId}`)
 
 
-  
+  // const fetch_rejected_ads = async () => {
+  //   try {
+  //     const result = await axios.get(`${config.URL}/show/user/rejected/ads/${auth ? auth?.user?.id : shortDeviceId}`)
+  //     setRejectedads(result.data)
+  //   } catch (error) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: t('ad.error'),
+  //       text2: t('ad.please_try_again'),
 
-  useEffect(() => {
-    fetch_rejected_ads();
-    fetch_accepted_ads();
-  }, [auth, shortDeviceId]);
+  //     })
+  //   }
+  // }
+
+
+
+  // const fetch_accepted_ads = async () => {
+  //   try {
+  //     const result = await axios.get(`${config.URL}/show/user/accepted/ads/${auth ? auth?.user?.id : shortDeviceId}`)
+  //     setAcceptedads(result.data)
+  //   } catch (error) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: t('ad.error'),
+  //       text2: t('ad.please_try_again'),
+
+  //     })
+  //   }
+  // }
+
+
+
+
+  // useEffect(() => {
+  //   fetch_rejected_ads();
+  //   fetch_accepted_ads();
+  // }, [auth, shortDeviceId]);
 
 
   // Show loading while device ID is being loaded
@@ -120,22 +123,24 @@ export default function Home() {
             {/* Categories */}
             <View className='bg-white my-1'>
               <Text className={` p-2 ${i18n.language === 'ar' ? 'text-right arabic-font' : ''} `}>{t('home.categories')}</Text>
-              {loading ? (
+              {categoriesLoading ? (
 
                 <CustomLoading title={t('home.categoriesLoading')} />
               ) : (
                 <View>
-                  {data && data.map((category: any) => (
+                  {categories && categories.map((category: any) => (
                     <HomeBtnItem
                       key={category.id}
                       title={i18n.language === 'ar' ? category.title_ar : category.title_en}
                       image={category.image}
                       count={category.subcategories.length || 0}
-                      onPress={() =>
-                        navigation.navigate('categories/subcategories', {
-                          category: JSON.stringify(category),
-                        })
-                      }
+                      // onPress={() =>
+                      //   navigation.navigate('categories/subcategories', {
+                      //     category: JSON.stringify(category),
+                      //   })
+                      // }
+
+                      onPress={()=> router.push(`/categories/subcategories?category=${encodeURIComponent(JSON.stringify(category))}`)}
 
                     />
                   ))}
@@ -145,28 +150,45 @@ export default function Home() {
 
 
 
-            {/* ads buttons control */}
-            <View className='bg-white my-1'>
-              <Text className={` p-2 ${i18n.language === 'ar' ? 'text-right arabic-font' : ''} `}>{t('home.ads')}</Text>
-              <HomeBtnItem
-                onPress={() => navigation.navigate('ads/rejected', {
-                  ads: JSON.stringify(rejectedads)
-                })}
-                title={t('home.rejectedads')}
-                image={rejected}
-                count={rejectedads && rejectedads.length || 0}
-              />
+
+            {rejected_ads && rejected_ads.length > 0 || accepted_ads && accepted_ads.length > 0 ? (
+
+              <View className='bg-white my-1'>
+                <Text className={` p-2 ${i18n.language === 'ar' ? 'text-right arabic-font' : ''} `}>{t('home.ads')}</Text>
+
+                {rejected_ads && rejected_ads.length > 0 ? (
+                  <HomeBtnItem
+                    // onPress={() => navigation.navigate('ads/rejected', {
+                    //   ads: JSON.stringify(rejectedads)
+                    // })}
+                    onPress={() => router.push(`/ads/rejected?ads=${encodeURIComponent(JSON.stringify(rejectedads))}`)}
+                    title={t('home.rejectedads')}
+                    image={rejected}
+                    count={rejectedads && rejectedads.length || 0}
+                  />
+                ) : (null)}
 
 
-              <HomeBtnItem
-                onPress={() => navigation.navigate('ads/approved', {
-                  ads: JSON.stringify(acceptedads)
-                })}
-                title={t('home.approvedads')}
-                image={approved}
-                count={acceptedads && acceptedads.length || 0}
-              />
-            </View>
+
+                {accepted_ads && accepted_ads.length > 0 ? (
+                  <HomeBtnItem
+                    // onPress={() => navigation.navigate('ads/approved', {
+                    //   ads: JSON.stringify(acceptedads)
+                    // })}
+                    onPress={() => router.push(`/ads/approved?ads=${encodeURIComponent(JSON.stringify(acceptedads))}`)}
+                    title={t('home.approvedads')}
+                    image={approved}
+                    count={acceptedads && acceptedads.length || 0}
+                  />
+                ) : (null)}
+              </View>
+
+            ) : (null)}
+
+
+
+
+
 
 
 

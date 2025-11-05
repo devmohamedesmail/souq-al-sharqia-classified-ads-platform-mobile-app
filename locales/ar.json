@@ -152,7 +152,8 @@
     "done": " تم ",
     "error": " حدث خطأ ",
     "please_try_again": " يرجى المحاولة مرة أخرى ",
-    "placesRequired": " المكان مطلوب "
+    "placesRequired": " المكان مطلوب ",
+    "all": " الكل "
   },
   "privacy": {
     "title": "سياسة الخصوصية",

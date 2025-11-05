@@ -156,7 +156,8 @@
     "done": "Done",
     "error":"Error Happened",
     "please_try_again":"Please try again",
-    "placesRequired":"Place is required"
+    "placesRequired":"Place is required",
+    "all": "All"
   
 
   },
