@@ -61,7 +61,12 @@
     "login_failed": "فشل في تسجيل الدخول",
     "edit_profile": "تعديل الملف الشخصي",
     "logout_success": "تم تسجيل الخروج بنجاح",
-    "logout_failed": "فشل في تسجيل الخروج"
+    "logout_failed": "فشل في تسجيل الخروج",
+     "orContinueWith": " أو تابع مع",
+    "continueWithGoogle": "تسجيل الدخول بواسطة Google",
+    "continueWithFacebook": "تسجيل الدخول بواسطة Facebook",
+    "googleSignInFailed": "فشل تسجيل الدخول بواسطة Google",
+    "facebookSignInFailed": "فشل تسجيل الدخول بواسطة Facebook"
   },
   "account": {
     "settings": "الإعدادات",

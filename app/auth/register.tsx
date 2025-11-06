@@ -6,11 +6,12 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import CustomInput from '@/components/custom/custominput'
 import { AuthContext } from '@/context/auth_context'
-import AuthHeader from '@/components/auth_header'
 import CustomButton from '@/components/custom/custombutton'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 import { Toast } from 'toastify-react-native'
 import { useRouter } from 'expo-router'
+import SocialLoginSection from '@/components/SocialLoginSection'
 
 
 interface RegisterFormValues {
@@ -25,7 +26,7 @@ export default function Register() {
     const [isLoading, setIsLoading] = useState(false)
     const { handle_register } = useContext(AuthContext)
     const router = useRouter()
-  
+
 
 
     const validationSchema = Yup.object({
@@ -102,7 +103,20 @@ export default function Register() {
                     showsVerticalScrollIndicator={false}
                 >
 
-                    <AuthHeader />
+
+                    <View className="flex-row justify-between items-center bg-primary pt-20 pb-10 mb-8 px-4">
+                        <TouchableOpacity
+                            onPress={() => router.push('/')}
+                            className="p-2"
+                        >
+                            <Ionicons
+                                name={i18n.language === 'ar' ? "chevron-back" : "chevron-back"}
+                                size={24}
+                                color="white"
+                            />
+                        </TouchableOpacity>
+                        <LanguageSwitcher />
+                    </View>
 
                     {/* Registration Form */}
                     <View className="flex-1 bg-white rounded-t-[32px] px-6 pt-6">
@@ -153,7 +167,7 @@ export default function Register() {
                         />
 
 
-
+                     <SocialLoginSection />
 
 
 

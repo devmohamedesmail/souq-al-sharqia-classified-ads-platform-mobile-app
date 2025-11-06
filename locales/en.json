@@ -65,7 +65,13 @@
     "login_failed": "Login Failed",
     "edit_profile": "Edit Profile",
     "logout_success": "Logged out successfully",
-    "logout_failed": "Logout Failed"
+    "logout_failed": "Logout Failed",
+    "orContinueWith": "Or continue with",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithFacebook": "Continue with Facebook",
+    "googleSignInFailed": "Google Sign-In Failed",
+    "facebookSignInFailed": "Facebook Sign-In Failed"
+
   },
   "account": {
     "settings": "Settings",

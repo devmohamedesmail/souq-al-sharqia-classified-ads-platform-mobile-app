@@ -61,9 +61,9 @@ export default function Account() {
                 text1: t('account.successlogout')
               })
 
-              setTimeout(()=>{
+              setTimeout(() => {
                 router.push('/');
-              },3000)
+              }, 3000)
             }
           }
         ]
@@ -171,7 +171,7 @@ export default function Account() {
               >
                 {t('account.guest_user')}
               </Text>
-              
+
             </View>
 
 
@@ -184,21 +184,21 @@ export default function Account() {
         <View className='bg-white mt-6 rounded-xl shadow-sm'>
           {/* <Text>{t("account.share_description")}</Text> */}
           <AccountBtnItem title={`${t('account.changeto')} ${nextLanguage}`} onPress={toggleLanguage} />
-          
+
         </View>
 
 
 
         <View className='bg-white mt-6 rounded-xl shadow-sm'>
           {/* <Text>{t("account.share_description")}</Text> */}
-          <AccountBtnItem 
-           onPress={() => router.push('/contact')}
-           title={t("account.contactus")} />
+          <AccountBtnItem
+            onPress={() => router.push('/contact')}
+            title={t("account.contactus")} />
 
-           
-          <AccountBtnItem 
-           onPress={() => router.push('/privacy')}
-           title={t("account.privacy_policy")} />
+
+          <AccountBtnItem
+            onPress={() => router.push('/privacy')}
+            title={t("account.privacy_policy")} />
           {/* <AccountBtnItem title={t("account.share")} /> */}
         </View>
 
@@ -230,18 +230,19 @@ export default function Account() {
 
           </View>
         ) : (
-          // <View className='p-2'>
-          //   <TouchableOpacity
-          //     onPress={() => router.push('/auth/login')}
-          //     className='bg-green-700 mt-4 rounded-xl shadow-sm'>
-          //     <View className='flex flex-row justify-center items-center p-4'>
-          //       <MaterialCommunityIcons name="account-edit-outline" size={24} color="white" />
-          //       <Text className='mx-2 text-lg arabic-font-semibold text-white'>{t("auth.signUp")}</Text>
+          <>
+            <View className='p-2'>
+              <TouchableOpacity
+                onPress={() => router.push('/auth/login')}
+                className='bg-green-700 mt-4 rounded-xl shadow-sm'>
+                <View className='flex flex-row justify-center items-center p-4'>
+                  <MaterialCommunityIcons name="account-edit-outline" size={24} color="white" />
+                  <Text className='mx-2 text-lg arabic-font-semibold text-white'>{t("auth.signUp")}</Text>
 
-          //     </View>
-          //   </TouchableOpacity>
-          // </View>
-          <></>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </>
         )}
 
 

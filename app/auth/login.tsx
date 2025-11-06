@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, StatusBar, KeyboardAvoidingView, Platform } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, StatusBar, KeyboardAvoidingView, Platform, Image } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -12,6 +12,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { AuthContext } from '@/context/auth_context'
 import Logo from '@/components/logo'
 import { Toast } from 'toastify-react-native'
+import SocialLoginSection from '@/components/SocialLoginSection'
 
 
 
@@ -95,7 +96,7 @@ export default function Login() {
                 className="p-2"
               >
                 <Ionicons
-                  name={i18n.language === 'ar' ? "chevron-forward" : "chevron-back"}
+                  name={i18n.language === 'ar' ? "chevron-back" : "chevron-back"}
                   size={24}
                   color="#374151"
                 />
@@ -107,10 +108,10 @@ export default function Login() {
 
             {/* Logo/Brand Section */}
             <View className="items-center mb-8">
-              <Logo />
+              {/* <Logo width={220} /> */}
               <Text
-                className="text-3xl font-bold text-gray-800 mb-2"
-                style={{ fontFamily: 'Cairo_700Bold' }}
+                className="text-3xl arabic-font text-gray-800 mb-2"
+               
               >
                 {t('auth.welcomeBack')}
               </Text>
@@ -183,7 +184,7 @@ export default function Login() {
                 />
               </View>
 
-
+             <SocialLoginSection />
 
               {/* Sign Up Link */}
               <View className="flex-row justify-center items-center mt-8 mb-8">

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Palmaal",
     "slug": "souq-al-sharqia",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "souq-al-sharqia",
@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.5",
+      "buildNumber": "1.0.6",
       "bundleIdentifier": "com.dev.mohamed.esmail.souqalsharqia",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -28,7 +28,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.dev.mohamed.esmail.souqalsharqia",
-      "versionCode": 5
+      "versionCode": 6
     },
     "web": {
       "bundler": "metro",
