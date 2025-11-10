@@ -17,6 +17,7 @@ import { AuthContext } from '@/context/auth_context';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
 import PlacesHomeSection from '@/components/PlacesHomeSection';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function Home() {
@@ -87,9 +88,9 @@ export default function Home() {
 
 
   return (
-    <View className='  '>
+    <SafeAreaView className='  '>
       {/* header seaction */}
-      <View className='bg-primary py-5 pt-14 px-3 flex flex-row items-center justify-between'>
+      <View className='bg-primary py-5 pt-5 px-3 flex flex-row items-center justify-between'>
 
         <TouchableOpacity className='ml-3' onPress={() => router.push("/account")}>
           <Feather name="settings" size={24} color="white" />
@@ -105,8 +106,8 @@ export default function Home() {
 
       {isConnected ?
 
-        <ScrollView className='pb-5 mb-44'>
-          <View className='pb-10'>
+        <ScrollView className='pb-44 '>
+          <View className='pb-44'>
 
             <Search />
 
@@ -208,6 +209,6 @@ export default function Home() {
 
 
 
-    </View>
+    </SafeAreaView>
   )
 }

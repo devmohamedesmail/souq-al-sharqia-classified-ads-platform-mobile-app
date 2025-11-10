@@ -5,12 +5,12 @@ import { useFonts as useGoogleFonts, Cairo_400Regular, Cairo_600SemiBold, Cairo_
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+// import 'react-native-reanimated';
 import '../global.css'
 import '../i18n'; // Initialize i18n
 
 // import { useColorScheme } from '@/components/useColorScheme';
-import { useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 import AuthProvider from '@/context/auth_context';
 import ToastManager from 'toastify-react-native'
 import { NetworkProvider } from '@/context/NetworkProvider';
@@ -67,6 +67,7 @@ function RootLayoutNav() {
 
 
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <StatusBar barStyle="light-content" backgroundColor="#074799" />
       <AuthProvider>
         <NetworkProvider>
           <Stack screenOptions={{ headerShown: false }}>

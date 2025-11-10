@@ -26,7 +26,7 @@ export default function PlacesHomeSection() {
                             // onPress={() => navigation.navigate('places/details', { place: JSON.stringify(place) })}
                             onPress={() =>
                                 router.push({
-                                    pathname: '/placeads',
+                                    pathname: '/places/categories',
                                     params: {
                                         place: JSON.stringify(place)
                                     }
