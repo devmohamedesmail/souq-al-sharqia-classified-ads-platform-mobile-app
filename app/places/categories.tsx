@@ -35,7 +35,8 @@ export default function PlaceCategories() {
                       () => router.push({
                         pathname: '/places/subcategories',
                         params: {
-                          category: JSON.stringify(category)
+                          category: JSON.stringify(category),
+                          place: JSON.stringify(placeData),
                         }
                       })}
 

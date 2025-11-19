@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, StatusBar, KeyboardAvoidingView, Platform, Image } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, StatusBar, KeyboardAvoidingView, Platform } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -12,7 +13,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { AuthContext } from '@/context/auth_context'
 import Logo from '@/components/logo'
 import { Toast } from 'toastify-react-native'
-import SocialLoginSection from '@/components/SocialLoginSection'
+
 
 
 
@@ -41,12 +42,12 @@ export default function Login() {
     }),
 
     onSubmit: async (values) => {
-     
+
       try {
-         setIsLoading(true)
+        setIsLoading(true)
         const result = await handle_login(values.email, values.password)
 
-       
+
         if (result && result.success === false) {
           Toast.show({
             type: 'error',
@@ -59,7 +60,7 @@ export default function Login() {
           })
           setIsLoading(false)
           router.replace('/')
-        
+
         }
       } catch (error) {
         setIsLoading(false)
@@ -76,7 +77,7 @@ export default function Login() {
 
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-white" edges={["bottom"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       <KeyboardAvoidingView
@@ -84,20 +85,21 @@ export default function Login() {
         className="flex-1"
       >
         <ScrollView
-          className="flex-1"
+          className="flex-1 bg-primary"
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
         >
           {/* Header */}
-          <View className="pt-10 pb-8 px-6">
+          <View className="pt-20 pb-8 px-6 bg-primary">
             <View className="flex-row justify-between items-center mb-8">
               <TouchableOpacity
+                
                 onPress={() => router.push('/')}
-                className="p-2"
+                className="p-2 bg-white rounded-full flex items-center justify-center"
               >
                 <Ionicons
                   name={i18n.language === 'ar' ? "chevron-back" : "chevron-back"}
-                  size={24}
+                  size={20}
                   color="#374151"
                 />
               </TouchableOpacity>
@@ -108,15 +110,15 @@ export default function Login() {
 
             {/* Logo/Brand Section */}
             <View className="items-center mb-8">
-              {/* <Logo width={220} /> */}
+              <Logo width={220} />
               <Text
-                className="text-3xl arabic-font text-gray-800 mb-2"
-               
+                className="text-3xl arabic-font text-white mb-2"
+
               >
                 {t('auth.welcomeBack')}
               </Text>
               <Text
-                className={`text-gray-600 text-center ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}
+                className={`text-white text-center ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}
                 style={{ fontFamily: 'Cairo_400Regular' }}
               >
                 {t('auth.loginToYourAccount')}
@@ -125,7 +127,7 @@ export default function Login() {
           </View>
 
           {/* Login Form */}
-          <View className="flex-1 px-6">
+          <View className="flex-1 px-6 pt-10 rounded-t-2xl bg-white overflow-hidden">
             <View className="space-y-4">
               {/* Email/Phone Input */}
               <CustomInput
@@ -184,7 +186,7 @@ export default function Login() {
                 />
               </View>
 
-             <SocialLoginSection />
+              {/* <SocialLoginSection /> */}
 
               {/* Sign Up Link */}
               <View className="flex-row justify-center items-center mt-8 mb-8">

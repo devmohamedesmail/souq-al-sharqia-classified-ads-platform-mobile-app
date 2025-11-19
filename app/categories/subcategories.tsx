@@ -21,8 +21,8 @@ export default function Subcategories() {
             />
             <Search />
 
-            <View className='pb-10 '>
-                <ScrollView className='mb-96 '>
+            <ScrollView >
+                <View className='pb-96'>
                     {parsedcategory && parsedcategory.subcategories.map((subcategory: any) => (
                         <HomeBtnItem
                             key={subcategory.id}
@@ -40,9 +40,9 @@ export default function Subcategories() {
                             }}
                         />
                     ))}
+                </View>
 
-                </ScrollView>
-            </View>
+            </ScrollView>
         </View>
     )
 }

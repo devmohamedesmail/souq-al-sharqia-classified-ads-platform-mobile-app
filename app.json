@@ -2,7 +2,7 @@
   "expo": {
     "name": "Palmaal",
     "slug": "souq-al-sharqia",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "souq-al-sharqia",
@@ -15,10 +15,12 @@
     },
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.6",
+      "buildNumber": "1.0.7",
       "bundleIdentifier": "com.dev.mohamed.esmail.souqalsharqia",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "We need access to your photo library to allow you to select photos.",
+        "NSCameraUsageDescription": "We need access to your camera to allow you to take photos."
       }
     },
     "android": {
@@ -28,7 +30,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.dev.mohamed.esmail.souqalsharqia",
-      "versionCode": 6
+      "versionCode": 7
     },
     "web": {
       "bundler": "metro",

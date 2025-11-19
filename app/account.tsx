@@ -13,6 +13,8 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Toast } from 'toastify-react-native'
 import axios from 'axios'
 import { config } from '@/constants/config'
+import Constants from 'expo-constants';
+import * as Application from 'expo-application';
 
 interface SettingItem {
   id: string
@@ -143,7 +145,7 @@ export default function Account() {
               </Text>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               className="p-4 flex-row items-center justify-between"
               onPress={() => Alert.alert(t('coming_soon'), t('feature_coming_soon'))}
             >
@@ -157,7 +159,7 @@ export default function Account() {
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         ) : (
           <View className="bg-white mx-4 mt-4 rounded-xl shadow-sm">
@@ -254,7 +256,11 @@ export default function Account() {
             className="text-gray-400 text-sm"
             style={{ fontFamily: 'Cairo_400Regular' }}
           >
-            {t('account.app_version')} 1.0.0
+            {t('account.app_version')} 
+            {/* {Constants.systemVersion} */}
+            {Application.nativeBuildVersion}
+          
+            
           </Text>
         </View>
       </ScrollView>

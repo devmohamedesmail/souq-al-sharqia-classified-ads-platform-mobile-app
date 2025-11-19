@@ -10,7 +10,7 @@ export default function CustomHeader({ title }: { title?: string }) {
   const router = useRouter()
 
   return (
-    <View className='bg-primary h-fit pt-20  pb-5 flex flex-row justify-between items-center px-5'>
+    <View className='bg-primary h-fit pt-24  pb-5 flex flex-row justify-between items-center px-5'>
       <View></View>
       <View className='flex flex-row items-center '>
         <Text className='text-white mx-4 arabic-font text-lg'>{title}</Text>

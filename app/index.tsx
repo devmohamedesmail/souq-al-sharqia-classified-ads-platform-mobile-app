@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { ScrollView, Text, TouchableOpacity, View, RefreshControl ,Share , Alert} from 'react-native'
 import Feather from '@expo/vector-icons/Feather';
 import { useTranslation } from 'react-i18next';
 import HomeBtnItem from '@/items/homebtnitem';
@@ -18,59 +18,54 @@ import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
 import PlacesHomeSection from '@/components/PlacesHomeSection';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
 export default function Home() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  // const navigation: any = useNavigation()
-  const [rejectedads, setRejectedads] = useState<any>(null);
-  const [acceptedads, setAcceptedads] = useState<any>(null);
   const { deviceId, shortDeviceId, isLoading } = useDeviceId();
   const { auth } = useContext(AuthContext)
   const { isConnected } = useNetwork();
-  const { data: categories, loading: categoriesLoading, error: categoriesError } = useFetch('/categories')
-  const { data: rejected_ads, loading: rejected_ads_loading, error: rejected_ads_error } = useFetch(`/show/user/rejected/ads/${auth ? auth?.user?.id : shortDeviceId}`)
-  const { data: accepted_ads, loading: accepted_ads_loading, error: accepted_ads_error } = useFetch(`/show/user/accepted/ads/${auth ? auth?.user?.id : shortDeviceId}`)
+  const [refreshing, setRefreshing] = useState(false);
+  const { data: categories, 
+          loading: categoriesLoading, 
+          error: categoriesError,
+          refetch: refetchCategories } = useFetch('/categories')
 
+  const { data: rejected_ads, 
+          loading: rejected_ads_loading, 
+          error: rejected_ads_error ,
+          refetch: refetchRejected } = useFetch(`/show/user/rejected/ads/${auth ? auth?.user?.id : shortDeviceId}`)
+  const { data: accepted_ads, 
+          loading: accepted_ads_loading, 
+          error: accepted_ads_error ,
+          refetch: refetchAccepted } = useFetch(`/show/user/accepted/ads/${auth ? auth?.user?.id : shortDeviceId}`)
 
-  // const fetch_rejected_ads = async () => {
-  //   try {
-  //     const result = await axios.get(`${config.URL}/show/user/rejected/ads/${auth ? auth?.user?.id : shortDeviceId}`)
-  //     setRejectedads(result.data)
-  //   } catch (error) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: t('ad.error'),
-  //       text2: t('ad.please_try_again'),
-
-  //     })
-  //   }
-  // }
-
-
-
-  // const fetch_accepted_ads = async () => {
-  //   try {
-  //     const result = await axios.get(`${config.URL}/show/user/accepted/ads/${auth ? auth?.user?.id : shortDeviceId}`)
-  //     setAcceptedads(result.data)
-  //   } catch (error) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: t('ad.error'),
-  //       text2: t('ad.please_try_again'),
-
-  //     })
-  //   }
-  // }
+  const { data: pending_ads, 
+          loading: pending_ads_loading, 
+          error: pending_ads_error ,
+          refetch: refetchPending } = useFetch(`/show/user/pending/ads/${auth ? auth?.user?.id : shortDeviceId}`)
 
 
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      // Refetch all data
+      await Promise.all([
+        refetchCategories?.(),
+        refetchRejected?.(),
+        refetchAccepted?.(),
+        refetchPending?.()
+      ]);
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetch_rejected_ads();
-  //   fetch_accepted_ads();
-  // }, [auth, shortDeviceId]);
 
 
   // Show loading while device ID is being loaded
@@ -84,18 +79,17 @@ export default function Home() {
 
 
 
-
-
-
   return (
-    <SafeAreaView className='  '>
+    <SafeAreaView className=' ' edges={['bottom']}>
       {/* header seaction */}
-      <View className='bg-primary py-5 pt-5 px-3 flex flex-row items-center justify-between'>
+      <View className='bg-primary py-5 pt-20 px-3 flex flex-row items-center justify-between'>
 
         <TouchableOpacity className='ml-3' onPress={() => router.push("/account")}>
-          <Feather name="settings" size={24} color="white" />
+          {/* <Feather name="settings" size={24} color="white" /> */}
+          <FontAwesome name="user" size={24} color="white" />
         </TouchableOpacity>
 
+        
 
         <View className='flex flex-row items-center '>
           {/* <Text className='text-white  arabic-font text-xl'> {t("home.app")}</Text> */}
@@ -106,14 +100,23 @@ export default function Home() {
 
       {isConnected ?
 
-        <ScrollView className='pb-44 '>
+        <ScrollView className='pb-44 '
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={['#2563eb']} // Android
+              tintColor='#2563eb' // iOS
+            />
+          }
+        >
           <View className='pb-44'>
 
             <Search />
 
             <HomeBtnItem
               title={t('home.postad')}
-              onPress={() => router.push("/ads/post")}
+              onPress={() => router.push(`${auth ? '/ads/post' : '/auth/login'}`)}
               image={postAd} />
 
 
@@ -141,7 +144,7 @@ export default function Home() {
                       //   })
                       // }
 
-                      onPress={()=> router.push(`/categories/subcategories?category=${encodeURIComponent(JSON.stringify(category))}`)}
+                      onPress={() => router.push(`/categories/subcategories?category=${encodeURIComponent(JSON.stringify(category))}`)}
 
                     />
                   ))}
@@ -152,20 +155,17 @@ export default function Home() {
 
 
 
-            {rejected_ads && rejected_ads.length > 0 || accepted_ads && accepted_ads.length > 0 ? (
+            {rejected_ads && rejected_ads.length > 0 || accepted_ads && accepted_ads.length > 0 || pending_ads && pending_ads.length > 0 ? (
 
               <View className='bg-white my-1'>
                 <Text className={` p-2 ${i18n.language === 'ar' ? 'text-right arabic-font' : ''} `}>{t('home.ads')}</Text>
 
                 {rejected_ads && rejected_ads.length > 0 ? (
                   <HomeBtnItem
-                    // onPress={() => navigation.navigate('ads/rejected', {
-                    //   ads: JSON.stringify(rejectedads)
-                    // })}
-                    onPress={() => router.push(`/ads/rejected?ads=${encodeURIComponent(JSON.stringify(rejectedads))}`)}
+                    onPress={() => router.push(`/ads/rejected?ads=${encodeURIComponent(JSON.stringify(rejected_ads))}`)}
                     title={t('home.rejectedads')}
                     image={rejected}
-                    count={rejectedads && rejectedads.length || 0}
+                    count={rejected_ads && rejected_ads.length || 0}
                   />
                 ) : (null)}
 
@@ -173,15 +173,25 @@ export default function Home() {
 
                 {accepted_ads && accepted_ads.length > 0 ? (
                   <HomeBtnItem
-                    // onPress={() => navigation.navigate('ads/approved', {
-                    //   ads: JSON.stringify(acceptedads)
-                    // })}
-                    onPress={() => router.push(`/ads/approved?ads=${encodeURIComponent(JSON.stringify(acceptedads))}`)}
+                    onPress={() => router.push(`/ads/approved?ads=${encodeURIComponent(JSON.stringify(accepted_ads))}`)}
                     title={t('home.approvedads')}
                     image={approved}
-                    count={acceptedads && acceptedads.length || 0}
+                    count={accepted_ads && accepted_ads.length || 0}
                   />
                 ) : (null)}
+
+
+                {pending_ads && pending_ads.length > 0 ? (
+                  <HomeBtnItem
+                    onPress={() => router.push(`/ads/approved?ads=${encodeURIComponent(JSON.stringify(pending_ads))}`)}
+                    title={t('home.approvedads')}
+                    image={approved}
+                    count={pending_ads && pending_ads.length || 0}
+                  />
+                ) : (null)}
+
+
+
               </View>
 
             ) : (null)}

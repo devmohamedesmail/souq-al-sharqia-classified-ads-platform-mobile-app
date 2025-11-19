@@ -12,6 +12,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { Toast } from 'toastify-react-native'
 import { useRouter } from 'expo-router'
 import SocialLoginSection from '@/components/SocialLoginSection'
+import Logo from '@/components/logo'
 
 
 interface RegisterFormValues {
@@ -98,7 +99,7 @@ export default function Register() {
                 className="flex-1"
             >
                 <ScrollView
-                    className="flex-1"
+                    className="flex-1 bg-primary"
                     contentContainerStyle={{ flexGrow: 1 }}
                     showsVerticalScrollIndicator={false}
                 >
@@ -107,21 +108,33 @@ export default function Register() {
                     <View className="flex-row justify-between items-center bg-primary pt-20 pb-10 mb-8 px-4">
                         <TouchableOpacity
                             onPress={() => router.push('/')}
-                            className="p-2"
+                            className="p-2 bg-white rounded-full flex items-center justify-center"
                         >
                             <Ionicons
                                 name={i18n.language === 'ar' ? "chevron-back" : "chevron-back"}
                                 size={24}
-                                color="white"
+                                color="black"
                             />
                         </TouchableOpacity>
                         <LanguageSwitcher />
                     </View>
 
+                    <View className="items-center mb-8">
+                                  <Logo width={220} />
+                                  <Text
+                                    className="text-3xl arabic-font text-white mb-2"
+                    
+                                  >
+                                    {t('auth.createAccount')}
+                                  </Text>
+                                  
+                                </View>
+
                     {/* Registration Form */}
                     <View className="flex-1 bg-white rounded-t-[32px] px-6 pt-6">
+                       
                         <View className="mb-6">
-                            <Text className="text-2xl text-center arabic-font text-gray-800 mb-2">
+                            <Text className="text-2xl text-center arabic-font text-white mb-2">
                                 {t('auth.createAccount')}
                             </Text>
                         </View>
@@ -167,7 +180,7 @@ export default function Register() {
                         />
 
 
-                     <SocialLoginSection />
+              
 
 
 
