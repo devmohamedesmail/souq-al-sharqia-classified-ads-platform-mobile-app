@@ -7,12 +7,13 @@ import * as Yup from 'yup'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 
-import CustomInput from '@/components/ui/input'
-import CustomButton from '@/components/ui/button'
+import Input from '@/components/ui/input'
+import Button from '@/components/ui/button'
 import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 import { AuthContext } from '@/context/auth_context'
 import Logo from '@/components/common/logo'
 import { Toast } from 'toastify-react-native'
+import GoogleLogin from '@/components/common/GoogleLogin'
 
 
 
@@ -91,11 +92,11 @@ export default function Login() {
         >
           {/* Header */}
           <View className="pt-20 pb-8 px-6 bg-primary">
-            <View className="flex-row justify-between items-center mb-8">
+            <View className="flex-row justify-between items-center mb-8 ">
               <TouchableOpacity
-                
+
                 onPress={() => router.push('/')}
-                className="p-2 bg-white rounded-full flex items-center justify-center"
+                className=" bg-white rounded-full w-10 h-10 flex items-center justify-center"
               >
                 <Ionicons
                   name={i18n.language === 'ar' ? "chevron-back" : "chevron-back"}
@@ -130,7 +131,7 @@ export default function Login() {
           <View className="flex-1 px-6 pt-10 rounded-t-2xl bg-white overflow-hidden">
             <View className="space-y-4">
               {/* Email/Phone Input */}
-              <CustomInput
+              <Input
                 label={t('auth.email')}
                 placeholder={t('auth.enteremail')}
                 value={formik.values.email}
@@ -141,7 +142,7 @@ export default function Login() {
               />
 
               {/* Password Input */}
-              <CustomInput
+              <Input
                 label={t('auth.password')}
                 placeholder={t('auth.enterPassword')}
                 value={formik.values.password}
@@ -179,14 +180,14 @@ export default function Login() {
 
               {/* Login Button */}
               <View className="mt-8">
-                <CustomButton
+                <Button
                   title={isLoading ? t('auth.signingIn') : t('auth.signIn')}
                   onPress={formik.handleSubmit}
                   disabled={isLoading || !formik.isValid || !formik.dirty || !formik.values.email || !formik.values.password}
                 />
               </View>
 
-              {/* <SocialLoginSection /> */}
+             <GoogleLogin />
 
               {/* Sign Up Link */}
               <View className="flex-row justify-center items-center mt-8 mb-8">

@@ -15,7 +15,7 @@ import { useDeviceId } from '@/hooks/useDeviceId';
 import { AuthContext } from '@/context/auth_context';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
-import PlacesHomeSection from '@/components/PlacesHomeSection';
+import PlacesHomeSection from '@/components/home/PlacesHomeSection';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
@@ -83,8 +83,7 @@ export default function Home() {
       {/* header seaction */}
       <View className='bg-primary py-5 pt-20 px-3 flex flex-row items-center justify-between'>
 
-        <TouchableOpacity className='ml-3' onPress={() => router.push("/account")}>
-          {/* <Feather name="settings" size={24} color="white" /> */}
+        <TouchableOpacity className='ml-3 border border-white w-12 h-12 rounded-full flex items-center justify-center' onPress={() => router.push("/account")}>
           <FontAwesome name="user" size={24} color="white" />
         </TouchableOpacity>
 

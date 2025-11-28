@@ -1,17 +1,15 @@
 import React, { useState, useContext } from 'react'
-import { View, Text, ScrollView, KeyboardAvoidingView, Platform, StatusBar, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, ScrollView, KeyboardAvoidingView, Platform, StatusBar, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import CustomInput from '@/components/ui/input'
+import Input from '@/components/ui/input'
 import { AuthContext } from '@/context/auth_context'
-import CustomButton from '@/components/ui/button'
+import Button from '@/components/ui/button'
 import LanguageSwitcher from '@/components/common/LanguageSwitcher'
-
 import { Toast } from 'toastify-react-native'
 import { useRouter } from 'expo-router'
-import SocialLoginSection from '@/components/SocialLoginSection'
 import Logo from '@/components/common/logo'
 
 
@@ -140,7 +138,7 @@ export default function Register() {
                         </View>
 
                         {/* Name Input */}
-                        <CustomInput
+                        <Input
                             label={t('auth.name')}
                             placeholder={t('auth.enterName')}
                             type="text"
@@ -151,7 +149,7 @@ export default function Register() {
                         />
 
                         {/* Phone Number Input */}
-                        <CustomInput
+                        <Input
                             label={t('auth.email')}
                             placeholder={t('auth.enteremail')}
                             type="phone"
@@ -161,7 +159,7 @@ export default function Register() {
                         />
 
                         {/* Password Input */}
-                        <CustomInput
+                        <Input
                             label={t('auth.password')}
                             placeholder={t('auth.enterPassword')}
                             type="password"
@@ -172,11 +170,11 @@ export default function Register() {
 
 
 
-                        <CustomButton
-                            title={isLoading ? t('auth.wait') : t('auth.next')}
+                        <Button
+                            title={isLoading ? t('auth.wait') : t('auth.createAccount')}
                             onPress={() => formik.handleSubmit()}
                             disabled={isLoading || !formik.isValid || !formik.dirty || !formik.values.email || !formik.values.password}
-                            icon={<Ionicons name="arrow-forward" size={20} color="white" />}
+                            
                         />
 
 
