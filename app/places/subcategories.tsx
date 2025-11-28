@@ -1,10 +1,10 @@
-import CustomHeader from '@/components/custom/customheader'
+import CustomHeader from '@/components/ui/header'
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import useFetch from '@/hooks/useFetch';
-import CustomLoading from '@/components/custom/customloading';
+import CustomLoading from '@/components/ui/loading';
 import HomeBtnItem from '@/items/homebtnitem';
 import { useRouter } from 'expo-router';
 

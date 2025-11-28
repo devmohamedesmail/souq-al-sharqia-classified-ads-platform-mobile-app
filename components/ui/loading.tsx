@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Text, ActivityIndicator } from 'react-native'
 import { useTranslation } from 'react-i18next';
-import Logo from '../logo';
+import Logo from '../common/logo';
 
 
 
-export default function CustomLoading({title = ''}: {title?: string}) {
+export default function Loading({title = ''}: {title?: string}) {
   const { t, i18n } = useTranslation();
   return (
     <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20 }}>

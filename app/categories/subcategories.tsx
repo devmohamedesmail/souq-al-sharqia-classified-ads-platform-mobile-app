@@ -1,4 +1,4 @@
-import CustomHeader from '@/components/custom/customheader'
+import CustomHeader from '@/components/ui/header'
 import Search from '@/components/Search';
 import HomeBtnItem from '@/items/homebtnitem';
 import React from 'react'

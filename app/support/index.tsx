@@ -1,4 +1,4 @@
-import CustomHeader from '@/components/custom/customheader'
+import CustomHeader from '@/components/ui/header'
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next';

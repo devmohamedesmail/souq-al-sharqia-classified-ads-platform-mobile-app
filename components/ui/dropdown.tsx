@@ -19,7 +19,7 @@ interface CustomDropdownProps {
   disabled?: boolean
 }
 
-export default function CustomDropdown({
+export default function Dropdown({
   label,
   placeholder = "Select an option",
   value,

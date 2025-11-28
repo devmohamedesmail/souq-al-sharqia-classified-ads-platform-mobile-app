@@ -2,10 +2,11 @@ import React from 'react'
 import { ScrollView, View, Text } from 'react-native'
 import useFetch from '@/hooks/useFetch';
 import { useLocalSearchParams } from 'expo-router';
-import CustomHeader from '@/components/custom/customheader';
+import CustomHeader from '@/components/ui/header';
 import { useTranslation } from 'react-i18next';
 import HomeBtnItem from '@/items/homebtnitem';
 import { useRouter } from 'expo-router';
+import CustomLoading from '@/components/ui/loading';
 
 export default function PlaceCategories() {
   const { t, i18n } = useTranslation();
@@ -19,7 +20,8 @@ export default function PlaceCategories() {
 
       <ScrollView>
         {loading ? (
-          <Text className='text-center p-3'>{t('home.pleasewait')}</Text>
+          // <Text className='text-center p-3'>{t('home.pleasewait')}</Text>
+          <CustomLoading />
         ) : (
           <View className='p-3'>
             {data && data.length > 0 && (

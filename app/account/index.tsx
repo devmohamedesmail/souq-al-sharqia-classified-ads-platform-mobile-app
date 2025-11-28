@@ -3,9 +3,9 @@ import { View, Text, ScrollView, TouchableOpacity, Switch, Alert, StatusBar } fr
 import { useTranslation } from 'react-i18next'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
+import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 import { AuthContext } from '@/context/auth_context'
-import CustomHeader from '@/components/custom/customheader'
+import CustomHeader from '@/components/ui/header'
 import AccountBtnItem from '@/items/accountbtnitem'
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Feather from '@expo/vector-icons/Feather';

@@ -15,7 +15,7 @@ interface CustomTextAreaProps {
   editable?: boolean
 }
 
-export default function CustomTextArea({
+export default function TextArea({
   label,
   placeholder,
   value,

@@ -19,7 +19,7 @@ interface CustomInputProps {
 
 }
 
-export default function CustomInput({ label, placeholder, value, onChangeText, keyboardType, error, type }: CustomInputProps) {
+export default function Input({ label, placeholder, value, onChangeText, keyboardType, error, type }: CustomInputProps) {
   const { t, i18n } = useTranslation()
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [inputFocused, setInputFocused] = useState(false)

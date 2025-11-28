@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useRouter } from 'expo-router'
 import Feather from '@expo/vector-icons/Feather';
 
-export default function CustomHeader({ title }: { title?: string }) {
+export default function Header({ title }: { title?: string }) {
   const { t } = useTranslation()
   const router = useRouter()
 

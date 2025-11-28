@@ -1,10 +1,10 @@
-import CustomHeader from '@/components/custom/customheader'
+import CustomHeader from '@/components/ui/header'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, Text, TouchableOpacity, Linking, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import useFetch from '@/hooks/useFetch'
-import CustomLoading from '@/components/custom/customloading'
+import CustomLoading from '@/components/ui/loading'
 
 export default function Contact() {
     const { t, i18n } = useTranslation();

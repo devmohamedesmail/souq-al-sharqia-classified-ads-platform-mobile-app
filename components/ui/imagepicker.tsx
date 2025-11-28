@@ -8,7 +8,7 @@ interface CustomImagePickerProps {
   label?: string
   placeholder?: string
   changeText?: string
-  value?: string[] // <-- array of URIs
+  value?: string[] 
   onImageSelect: (imageUris: string[]) => void // <-- array of URIs
   error?: string
   touched?: boolean

@@ -1,4 +1,4 @@
-import CustomHeader from '@/components/custom/customheader'
+import CustomHeader from '@/components/ui/header'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, ScrollView, Text } from 'react-native'

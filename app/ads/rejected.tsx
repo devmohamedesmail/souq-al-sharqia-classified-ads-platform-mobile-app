@@ -1,4 +1,4 @@
-import CustomHeader from '@/components/custom/customheader'
+import CustomHeader from '@/components/ui/header'
 import { AuthContext } from '@/context/auth_context';
 import AdUserItem from '@/items/aduseritem';
 import { useLocalSearchParams } from 'expo-router';

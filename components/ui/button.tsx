@@ -9,7 +9,7 @@ interface CustomButtonProps {
   [key: string]: any
 }
 
-export default function CustomButton({ title, onPress, icon, disabled = false, ...props }: CustomButtonProps) {
+export default function Button({ title, onPress, icon, disabled = false, ...props }: CustomButtonProps) {
     return (
         <View className='my-2'>
             <TouchableOpacity 

@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react'
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import CustomHeader from '@/components/custom/customheader';
+import CustomHeader from '@/components/ui/header';
 import { useTranslation } from 'react-i18next';
 import useFetch from '@/hooks/useFetch';
-import CustomLoading from '@/components/custom/customloading';
+import CustomLoading from '@/components/ui/loading';
 import NoAds from '@/components/NoAds';
 import AdItem from '@/items/aditem';
 

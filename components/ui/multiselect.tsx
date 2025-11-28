@@ -19,7 +19,7 @@ interface CustomMultiSelectProps {
     disabled?: boolean
 }
 
-export default function CustomMultiSelect({
+export default function MultiSelect({
     label,
     placeholder = "Select options",
     value = [],

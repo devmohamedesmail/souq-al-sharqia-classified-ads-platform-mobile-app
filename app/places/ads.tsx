@@ -1,5 +1,5 @@
-import CustomHeader from '@/components/custom/customheader'
-import CustomLoading from '@/components/custom/customloading';
+import CustomHeader from '@/components/ui/header'
+import CustomLoading from '@/components/ui/loading';
 import NoAds from '@/components/NoAds';
 import useFetch from '@/hooks/useFetch';
 import AdItem from '@/items/aditem';
@@ -17,6 +17,7 @@ export default function Ads() {
 
   const placeData = place ? JSON.parse(place) : null;
   const {data, loading, error} = useFetch(`/places/categories/ads/${placeData?.id}/${category_id}/${subcategory_id}`);
+ 
   const { t, i18n } = useTranslation();
   return (
     <View>
@@ -28,8 +29,8 @@ export default function Ads() {
           <CustomLoading />
         ) : (
           <View className='p-3'>
-            {data && data.length > 0 ? (
-              data.map((ad: any) => (
+            {data && data.data.length > 0 ? (
+              data.data.map((ad: any) => (
                 <AdItem key={ad.id} ad={ad} />
               ))
             ) : (

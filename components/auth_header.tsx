@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, ImageBackground } from 'react-native'
-import LanguageSwitcher from './LanguageSwitcher'
+import LanguageSwitcher from './common/LanguageSwitcher'
 import { Ionicons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
 

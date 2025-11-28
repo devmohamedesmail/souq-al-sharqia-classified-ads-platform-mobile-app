@@ -7,11 +7,11 @@ import * as Yup from 'yup'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 
-import CustomInput from '@/components/custom/custominput'
-import CustomButton from '@/components/custom/custombutton'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
+import CustomInput from '@/components/ui/input'
+import CustomButton from '@/components/ui/button'
+import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 import { AuthContext } from '@/context/auth_context'
-import Logo from '@/components/logo'
+import Logo from '@/components/common/logo'
 import { Toast } from 'toastify-react-native'
 
 

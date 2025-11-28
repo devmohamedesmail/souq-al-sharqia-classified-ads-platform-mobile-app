@@ -1,14 +1,13 @@
 import React, { useContext, useState } from 'react'
-import { ScrollView, Text, TouchableOpacity, View, RefreshControl ,Share , Alert} from 'react-native'
-import Feather from '@expo/vector-icons/Feather';
+import { ScrollView, Text, TouchableOpacity, View, RefreshControl} from 'react-native'
 import { useTranslation } from 'react-i18next';
 import HomeBtnItem from '@/items/homebtnitem';
 import help from '../assets/images/help.png'
 import postAd from '../assets/images/post.png'
 import { useRouter } from 'expo-router';
 import Search from '@/components/Search';
-import Logo from '@/components/logo';
-import CustomLoading from '@/components/custom/customloading';
+import Logo from '@/components/common/logo';
+import CustomLoading from '@/components/ui/loading';
 import useFetch from '@/hooks/useFetch';
 import rejected from "../assets/images/cross.png"
 import approved from "../assets/images/approve.png"

@@ -2,25 +2,25 @@ import React, { useContext, useEffect, useState } from 'react'
 import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
 
 import { useRouter } from 'expo-router';
-import CustomHeader from '@/components/custom/customheader';
+import CustomHeader from '@/components/ui/header';
 import { useTranslation } from 'react-i18next';
-import CustomImagePicker from '@/components/custom/customimagepicker';
+import CustomImagePicker from '@/components/ui/imagepicker';
 import { Toast } from 'toastify-react-native'
 import axios from 'axios'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import CustomInput from '@/components/custom/custominput';
-import CustomTextArea from '@/components/custom/customtextarea';
-import CustomButton from '@/components/custom/custombutton';
+import CustomInput from '@/components/ui/input';
+import CustomTextArea from '@/components/ui/textarea';
+import CustomButton from '@/components/ui/button';
 import useFetch from '@/hooks/useFetch';
-import CustomDropdown from '@/components/custom/customdropdown';
+import CustomDropdown from '@/components/ui/dropdown';
 import { config } from '@/constants/config';
 import { AuthContext } from '@/context/auth_context';
 import { useDeviceId } from '@/hooks/useDeviceId';
 import { useNetwork } from '@/context/NetworkProvider';
 import OfflineBanner from '@/components/OfflineBanner';
 import { Ionicons } from '@expo/vector-icons';
-import CustomMultiSelect from '@/components/custom/custommultiselect';
+import CustomMultiSelect from '@/components/ui/multiselect';
 
 
 export default function PostAd() {

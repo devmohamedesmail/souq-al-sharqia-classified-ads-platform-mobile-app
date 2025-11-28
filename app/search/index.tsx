@@ -3,9 +3,9 @@ import { View, Text } from 'react-native'
 import { useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import { config } from '@/constants/config';
-import CustomHeader from '@/components/custom/customheader';
+import CustomHeader from '@/components/ui/header';
 import SearchItem from '@/items/searchitem';
-import CustomLoading from '@/components/custom/customloading';
+import CustomLoading from '@/components/ui/loading';
 import NoAds from '@/components/NoAds';
 
 export default function SearchPage() {

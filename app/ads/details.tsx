@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, ScrollView, Linking, Alert } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import CustomHeader from '@/components/custom/customheader';
+import CustomHeader from '@/components/ui/header';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Feather from '@expo/vector-icons/Feather';

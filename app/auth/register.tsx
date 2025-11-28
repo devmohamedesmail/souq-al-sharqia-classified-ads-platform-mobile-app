@@ -4,15 +4,15 @@ import { Ionicons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import CustomInput from '@/components/custom/custominput'
+import CustomInput from '@/components/ui/input'
 import { AuthContext } from '@/context/auth_context'
-import CustomButton from '@/components/custom/custombutton'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
+import CustomButton from '@/components/ui/button'
+import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 
 import { Toast } from 'toastify-react-native'
 import { useRouter } from 'expo-router'
 import SocialLoginSection from '@/components/SocialLoginSection'
-import Logo from '@/components/logo'
+import Logo from '@/components/common/logo'
 
 
 interface RegisterFormValues {

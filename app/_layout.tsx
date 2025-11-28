@@ -1,16 +1,12 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { useFonts as useGoogleFonts, Cairo_400Regular, Cairo_600SemiBold, Cairo_700Bold } from '@expo-google-fonts/cairo';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-// import 'react-native-reanimated';
-import '../global.css'
-import '../i18n'; // Initialize i18n
 
-// import { useColorScheme } from '@/components/useColorScheme';
-import { StatusBar, useColorScheme } from 'react-native';
+import '../global.css'
+import '../lib/i18n';
 import AuthProvider from '@/context/auth_context';
 import ToastManager from 'toastify-react-native'
 import { NetworkProvider } from '@/context/NetworkProvider';
@@ -61,23 +57,13 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-
-
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <StatusBar barStyle="light-content" backgroundColor="#074799" />
-      <AuthProvider>
-        <NetworkProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-
-          </Stack>
-          <ToastManager />
-        </NetworkProvider>
-      </AuthProvider>
-    </ThemeProvider>
-
-
+    <AuthProvider>
+      <NetworkProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+        </Stack>
+        <ToastManager />
+      </NetworkProvider>
+    </AuthProvider>
   );
 }
